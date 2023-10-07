@@ -9,14 +9,20 @@ import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai"
 import Button from '../ui/Button'
 import { RxAvatar } from "react-icons/rx"
 import Image from 'next/image'
+import axios from 'axios'
+import { server } from '@/utils/server'
+import { useRouter } from 'next/navigation'
 
 const SignUp = () => {
 
+    const [isLoading, setIsLoading] = useState(false)
     const [email, setEmail] = useState("");
     const [name, setName] = useState("");
     const [password, setPassword] = useState("");
     const [visible, setVisible] = useState(false);
     const [avatar, setAvatar] = useState<string | null>(null);
+
+    const router = useRouter()
 
     // UPLOAD USER IMAGE
     const handleFileInputChange = (e: any) => {
@@ -31,6 +37,20 @@ const SignUp = () => {
         reader.readAsDataURL(e.target.files[0]);
       };
 
+      // Register
+      const handleSubmit = async (e: any) => {
+        e.preventDefault()
+        try {
+          setIsLoading(true)
+          await axios.post(`${server}/user/create-user`, { name, email, password, avatar })
+          router.push("/login")
+        } catch (error) {
+          console.log(error)
+        } finally {
+          setIsLoading(false)
+        }
+      }
+
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
     <div className="sm:mx-auto sm:w-full sm:max-w-md">
@@ -40,12 +60,10 @@ const SignUp = () => {
     </div>
     <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
       <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-        <form className="space-y-6" onSubmit={() => {}}>
+        <form className="space-y-6" onSubmit={handleSubmit}>
           <div>
-            <label
-              htmlFor="email"
-              className="block text-sm font-medium text-gray-700"
-            >
+            {/* NAME FIELD */}
+            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
               Full Name
             </label>
             <div className="mt-1">
@@ -61,6 +79,7 @@ const SignUp = () => {
             </div>
           </div>
 
+          {/* EMAIL FIELD */}
           <div>
             <label
               htmlFor="email"
@@ -81,6 +100,7 @@ const SignUp = () => {
             </div>
           </div>
 
+          {/* PASSWORD FIELD */}
           <div>
             <label
               htmlFor="password"
@@ -114,6 +134,7 @@ const SignUp = () => {
             </div>
           </div>
 
+          {/* PROFILE PICTUE FIELD */}
           <div>
             <label
               htmlFor="avatar"
@@ -122,7 +143,7 @@ const SignUp = () => {
             <div className="mt-2 flex items-center">
               <span className="inline-block h-8 w-8 rounded-full overflow-hidden">
                 {avatar ? (
-                  <Image src={avatar} alt="avatar" className="h-full w-full object-cover rounded-full" fill/>
+                  <Image src={avatar} alt="avatar" className="h-full w-full object-cover rounded-full"height={40} width={40}/>
                 ) : (
                   <RxAvatar className="h-8 w-8" />
                 )}
@@ -145,12 +166,12 @@ const SignUp = () => {
           </div>
 
           <div>
-            <button
-              type="submit"
+            <Button
+              type="submit" isLoading={isLoading}
               className="group relative w-full h-[40px] flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
             >
               Submit
-            </button>
+            </Button>
           </div>
 
           <div className="flex items-center gap-4 mb-2">
