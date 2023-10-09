@@ -12,6 +12,7 @@ import Image from 'next/image'
 import axios from 'axios'
 import { server } from '@/utils/server'
 import { useRouter } from 'next/navigation'
+import { toast } from "react-toastify"
 
 const SignUp = () => {
 
@@ -43,9 +44,10 @@ const SignUp = () => {
         try {
           setIsLoading(true)
           await axios.post(`${server}/user/create-user`, { name, email, password, avatar })
+          toast.success("An activation code has been sent to your email")
           router.push("/login")
-        } catch (error) {
-          console.log(error)
+        } catch (error: any) {
+          toast.error(error.response.data.message)
         } finally {
           setIsLoading(false)
         }

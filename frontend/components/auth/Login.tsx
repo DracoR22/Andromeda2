@@ -6,13 +6,34 @@ import Button from "../ui/Button"
 import { FcGoogle } from "react-icons/fc"
 import { useState } from "react"
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai"
+import axios from "axios"
+import { server } from "@/utils/server"
+import { toast } from "react-toastify"
+import { useRouter } from "next/navigation"
 
 
 const Login = () => {
 
+    const [isLoading, setIsLoading] = useState(false)
+    const router = useRouter()
+
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [visible, setVisible] = useState(false);
+
+    const onSubmit = async (e: any) => {
+       e.preventDefault()
+       try {
+        setIsLoading(true)
+        await axios.post(`${server}/user/login-user`, { email, password }, { withCredentials: true })
+        toast.success("Logged In!")
+        router.push("/")
+       } catch (error: any) {
+        toast.error(error.response.data.message)
+       } finally {
+        setIsLoading(false)
+       }
+    }
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
@@ -23,7 +44,7 @@ const Login = () => {
       </div>
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-          <form className="space-y-6" onSubmit={() => {}}>
+          <form className="space-y-6" onSubmit={onSubmit}>
             <div>
               <label
                 htmlFor="email"
@@ -101,7 +122,7 @@ const Login = () => {
             </div>
             <div>
               <Button
-                type="submit"
+                type="submit" isLoading={isLoading}
                 className="group relative w-full h-[40px] flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700"
               >
                 Submit
