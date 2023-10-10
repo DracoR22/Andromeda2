@@ -3,13 +3,19 @@
 import { categoriesData, productData } from "@/static/data"
 import styles from "@/styles/styles"
 import Link from "next/link"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { AiOutlineHeart, AiOutlineSearch, AiOutlineShoppingCart } from "react-icons/ai"
 import { IoIosArrowDown } from "react-icons/io"
 import { CgProfile } from "react-icons/cg"
 import DropDown from "../DropDown"
 import NavItems from "./NavItems"
 import Image from "next/image"
+import { useSelector } from "react-redux"
+import store from "@/redux/store"
+import { loadUser } from "@/redux/actions/user"
+import { useSession } from 'next-auth/react'
+import axios from "axios"
+import { server } from "@/utils/server"
 
 interface Props {
   activeHeading: number
@@ -17,11 +23,21 @@ interface Props {
 
 const Header = ({ activeHeading }: Props) => {
 
+  const { isAuthenticated, user } = useSelector((state: any) => state.user);
+
   const [dropDown, setDropDown] = useState(false);
   const [active, setActive] = useState(false)
 
   const [searchTerm, setSearchTerm] = useState("")
   const [searchData, setSearchData] = useState<any[] | null>(null)
+
+  const { data } = useSession()
+
+  useEffect(() => {
+    // Check if the user is authenticated and if session data is available
+    if (!user && data) {
+      axios.post(`${server}/user/social-auth`, {email: data?.user?.email, name: data?.user?.name, avatar: data.user?.image, });}
+  }, [user, data]);
 
   const handleSearchChange = (e: any) => {
     const term = e.target.value
@@ -109,9 +125,15 @@ const Header = ({ activeHeading }: Props) => {
             </div>
 
             <div className="relative cursor-pointer">
-              <Link href="/login">
+              {user ? (
+                <Link href="/profile">
+                  <Image src={user.avatar?.url} alt="" width={45} height={45} className="rounded-full object-cover"/>
+                </Link>
+              ) : (
+                <Link href="/login">
                 <CgProfile size={27}/>
-              </Link>
+               </Link>
+              )}
             </div>
           </div>
         </div>

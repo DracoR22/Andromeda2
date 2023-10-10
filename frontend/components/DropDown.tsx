@@ -13,7 +13,9 @@ const DropDown = ({ categoriesData, setDropDown }: Props) => {
   const submitHandle = (i: any) => {
     router.push(`/products?category=${i.title}`);
     setDropDown(false);
-    window.location.reload();
+    setTimeout(() => {
+      window.location.reload();
+    }, 500);
   };
 
   return (

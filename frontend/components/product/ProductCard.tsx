@@ -4,6 +4,7 @@ import Link from "next/link";
 import { AiFillHeart,AiFillStar, AiOutlineEye, AiOutlineHeart, AiOutlineShoppingCart, AiOutlineStar } from "react-icons/ai";
 import { useState } from "react"
 import styles from "@/styles/styles";
+import ProductDetailsCard from "./ProductDetailsCard";
 
 interface Props {
     data: any
@@ -64,6 +65,9 @@ const ProductCard = ({ data }: Props) => {
                 onClick={() => setOpen(!open)} color={"#333"} title="Quick view"/>
                 <AiOutlineShoppingCart size={25} className="cursor-pointer absolute right-2 top-24"
                 onClick={() => setOpen(!open)} color={"#444"} title="Add to cart"/>
+                {open && (
+                    <ProductDetailsCard open={open} setOpen={setOpen} data={data}/>
+                )}
         </div>
      </div>
    </>

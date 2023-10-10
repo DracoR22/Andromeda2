@@ -123,7 +123,7 @@ module.exports = {
   //--------------------------------------------//Get User//----------------------------------------------//
   getUser: (catchAsyncErrors(async(req, res, next) => {
     try {
-      const user = await User.findById(req.user.id)
+      const user = await User.findById(req.user._id)
 
       if(!user) {
         return next(new ErrorHandler("User does not exist", 400));
@@ -133,6 +133,23 @@ module.exports = {
         success: true,
         user
       })
+    } catch (error) {
+      return next(new ErrorHandler(error.message, 500));
+    }
+  })),
+
+   //--------------------------------------------//Social Auth//----------------------------------------------//
+  socialAuth: (catchAsyncErrors(async(req, res, next) => {
+    try {
+      const { name, email, avatar } = req.body
+      const user = await User.findOne({ email })
+
+      if(!user) {
+        const newUser = await User.create({ name, email, avatar })
+        sendToken(newUser, 200, res)
+      } else {
+        sendToken(user, 200, res)
+      }
     } catch (error) {
       return next(new ErrorHandler(error.message, 500));
     }
