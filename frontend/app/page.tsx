@@ -11,11 +11,13 @@ const Home = () => {
     <div>
        <Header activeHeading={1}/>
        <Hero/>
+      <div className="mx-10">
        <Categories/>
        <BestDeals/>
        <Events/>
        <FeaturedProduct/>
        <Footer/>
+      </div>
     </div>
   )
 }

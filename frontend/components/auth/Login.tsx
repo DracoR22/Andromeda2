@@ -9,7 +9,7 @@ import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai"
 import axios from "axios"
 import { server } from "@/utils/server"
 import { toast } from "react-toastify"
-import { useRouter } from "next/navigation"
+import { redirect, useRouter } from "next/navigation"
 import { signIn } from "next-auth/react"
 
 
@@ -42,15 +42,7 @@ const Login = () => {
     
   const handleGoogleSignIn = async () => {
     const result = await signIn('google');
-    
-    // Check if the sign-in was successful and the user is authenticated.
-    if (result?.error) {
-      // Handle sign-in error here.
-      toast.error('Google Sign-In Error');
-    } else {
-      // Sign-in successful, navigate to the home page.
-      router.push('/'); // Replace '/' with the actual path to your home page.
-    }
+    redirect("/")
   };
 
   return (

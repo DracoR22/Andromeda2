@@ -11,8 +11,9 @@ import { RxAvatar } from "react-icons/rx"
 import Image from 'next/image'
 import axios from 'axios'
 import { server } from '@/utils/server'
-import { useRouter } from 'next/navigation'
+import { redirect, useRouter } from 'next/navigation'
 import { toast } from "react-toastify"
+import { signIn } from 'next-auth/react'
 
 const SignUp = () => {
 
@@ -52,6 +53,12 @@ const SignUp = () => {
           setIsLoading(false)
         }
       }
+
+      const handleGoogleSignIn = async () => {
+        const result = await signIn('google');
+        redirect("/")
+      };
+    
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
@@ -183,7 +190,7 @@ const SignUp = () => {
            </div>
 
             <div>
-             <Button
+             <Button onClick={handleGoogleSignIn}
               className="w-full flex items-center justify-center py-2 px-4 border border-black transition hover:bg-gray-200 text-sm font-medium rounded-md">
                Continue with Google 
                <span className="ml-3">

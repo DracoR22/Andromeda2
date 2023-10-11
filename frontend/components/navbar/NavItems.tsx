@@ -2,7 +2,7 @@ import { navItems } from "@/static/data"
 import Link from "next/link"
 
 interface Props {
-    active: number
+    active?: number
 }
 
 const NavItems = ({ active }: Props) => {
