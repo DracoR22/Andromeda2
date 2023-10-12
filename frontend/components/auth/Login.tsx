@@ -40,10 +40,21 @@ const Login = () => {
     }
 
     
-  const handleGoogleSignIn = async () => {
-    const result = await signIn('google');
-    redirect("/")
-  };
+    const handleGoogleSignIn = async () => {
+    
+        const result = await signIn('google');
+        
+        
+        if (result?.error) {
+          
+          console.error('Google Sign-In Error:', result.error);
+        } else {
+          
+         redirect("/")
+         
+        }
+      
+    };
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
@@ -146,13 +157,13 @@ const Login = () => {
            </div>
 
             <div>
-             <Button  onClick={handleGoogleSignIn}
-              className="w-full flex items-center justify-center py-2 px-4 border border-black transition hover:bg-gray-200 text-sm font-medium rounded-md">
+              <div onClick={handleGoogleSignIn}
+              className="w-full cursor-pointer flex items-center justify-center py-2 px-4 border border-black transition hover:bg-gray-200 text-sm font-medium rounded-md">
                Continue with Google 
                <span className="ml-3">
                <FcGoogle/>
                </span>
-             </Button>
+             </div>
           </div>
             <div className={`${styles.noramlFlex} w-full`}>
               <h4>Not have any account?</h4>

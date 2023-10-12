@@ -20,7 +20,7 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
- 
+
   useEffect(() => {
     store.dispatch(loadUser())
   }, [])
