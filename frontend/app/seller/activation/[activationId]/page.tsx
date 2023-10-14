@@ -5,7 +5,7 @@ import axios from "axios"
 import { useEffect, useState } from "react"
 
 
-const ActivationPage = ({params}: {params: {activationId: string }}) => {
+const SellerActivationPage = ({params}: {params: {activationId: string }}) => {
 
     const activation_token  = params.activationId
     const [expiredError, setExpiredError] = useState(false)
@@ -14,9 +14,9 @@ const ActivationPage = ({params}: {params: {activationId: string }}) => {
         if (params.activationId) {
             const activationEmail = async () => {
                 try {
-                    await axios.post(`${server}/user/activation`, { activation_token });
+                    await axios.post(`${server}/shop/activation`, { activation_token });
                 } catch (error: any) {
-                   setExpiredError(true)
+                  setExpiredError(true)
                 }
             };
             activationEmail();
@@ -27,10 +27,10 @@ const ActivationPage = ({params}: {params: {activationId: string }}) => {
       {expiredError ? (
         <p>Your token has expired</p>
       ) : (
-        <p>Your account has been created succesfully</p>
+        <p>Your shop has been created succesfully</p>
       )}
     </div>
   )
 }
 
-export default ActivationPage
+export default SellerActivationPage

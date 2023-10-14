@@ -4,6 +4,7 @@ const cookieParser = require("cookie-parser")
 const cors = require("cors")
 
 const userRoutes = require("./routes/userRoutes")
+const shopRoutes = require("./routes/shopRoutes")
 
 const app = express()
 
@@ -21,6 +22,7 @@ app.get("/", (req, res, next) => {
 
 // Routes
 app.use("/api/v2/user", userRoutes)
+app.use("/api/v2/shop", shopRoutes)
 
 // Middleware Calls
 app.use(ErrorHandler)

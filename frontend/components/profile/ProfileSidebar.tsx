@@ -3,9 +3,9 @@ import { AiOutlineLogin, AiOutlineMessage } from "react-icons/ai";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { HiOutlineReceiptRefund, HiOutlineShoppingBag } from "react-icons/hi";
 import { MdOutlineAdminPanelSettings, MdOutlinePassword, MdOutlineTrackChanges } from "react-icons/md";
-import { TbAddressBook } from "react-icons/tb";
+import { TbAddressBook, TbCreditCard } from "react-icons/tb";
 import { RxPerson } from "react-icons/rx";
-import { useRouter } from "next/navigation";
+import { useRouter, redirect } from "next/navigation";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import { server } from "@/utils/server";
@@ -24,9 +24,10 @@ const ProfileSidebar = ({ active, setActive }: Props) => {
   const logoutHandler = () => {
     axios.get(`${server}/user/logout`, { withCredentials: true })
       .then((res) => {
-        toast.success(res.data.message);
-        window.location.reload();
-        router.push("/login");
+        router.push("/")
+        setTimeout(() => {
+          window.location.reload();
+        }, 500);
       })
       .catch((error) => {
         console.log(error.response.data.message);
@@ -36,7 +37,7 @@ const ProfileSidebar = ({ active, setActive }: Props) => {
   return (
     <div className="w-full bg-white shadow-sm rounded-[10px] p-4 pt-8">
     <div
-      className="flex items-center cursor-pointer w-full mb-8"
+      className="flex items-center cursor-pointer w-full mb-8 hover:text-[red] transition"
       onClick={() => setActive(1)}
     >
       <RxPerson size={20} color={active === 1 ? "red" : ""} />
@@ -49,7 +50,7 @@ const ProfileSidebar = ({ active, setActive }: Props) => {
       </span>
     </div>
     <div
-      className="flex items-center cursor-pointer w-full mb-8"
+      className="flex items-center cursor-pointer w-full mb-8 hover:text-[red] transition"
       onClick={() => setActive(2)}
     >
       <HiOutlineShoppingBag size={20} color={active === 2 ? "red" : ""} />
@@ -62,7 +63,7 @@ const ProfileSidebar = ({ active, setActive }: Props) => {
       </span>
     </div>
     <div
-      className="flex items-center cursor-pointer w-full mb-8"
+      className="flex items-center cursor-pointer w-full mb-8 hover:text-[red] transition"
       onClick={() => setActive(3)}
     >
       <HiOutlineReceiptRefund size={20} color={active === 3 ? "red" : ""} />
@@ -76,7 +77,7 @@ const ProfileSidebar = ({ active, setActive }: Props) => {
     </div>
 
     <div
-      className="flex items-center cursor-pointer w-full mb-8"
+      className="flex items-center cursor-pointer w-full mb-8 hover:text-[red] transition"
       onClick={() => setActive(4) || router.push("/inbox")}
     >
       <AiOutlineMessage size={20} color={active === 4 ? "red" : ""} />
@@ -90,7 +91,7 @@ const ProfileSidebar = ({ active, setActive }: Props) => {
     </div>
 
     <div
-      className="flex items-center cursor-pointer w-full mb-8"
+      className="flex items-center cursor-pointer w-full mb-8 hover:text-[red] transition"
       onClick={() => setActive(5)}
     >
       <MdOutlineTrackChanges size={20} color={active === 5 ? "red" : ""} />
@@ -104,7 +105,7 @@ const ProfileSidebar = ({ active, setActive }: Props) => {
     </div>
 
     <div
-      className="flex items-center cursor-pointer w-full mb-8"
+      className="flex items-center cursor-pointer w-full mb-8 hover:text-[red] transition"
       onClick={() => setActive(6)}
     >
       <RiLockPasswordLine size={20} color={active === 6 ? "red" : ""} />
@@ -118,7 +119,7 @@ const ProfileSidebar = ({ active, setActive }: Props) => {
     </div>
 
     <div
-      className="flex items-center cursor-pointer w-full mb-8"
+      className="flex items-center cursor-pointer w-full mb-8 hover:text-[red] transition"
       onClick={() => setActive(7)}
     >
       <TbAddressBook size={20} color={active === 7 ? "red" : ""} />
@@ -131,19 +132,33 @@ const ProfileSidebar = ({ active, setActive }: Props) => {
       </span>
     </div>
 
+    <div
+      className="flex items-center cursor-pointer w-full mb-8 hover:text-[red] transition"
+      onClick={() => setActive(8)}
+    >
+      <TbCreditCard size={20} color={active === 8 ? "red" : ""} />
+      <span
+        className={`pl-3 ${
+          active === 8 ? "text-[red]" : ""
+        } 800px:block hidden`}
+      >
+        Payment Methods
+      </span>
+    </div>
+
     {user && user?.role === "Admin" && (
       <Link href="/admin/dashboard">
         <div
-          className="flex items-center cursor-pointer w-full mb-8"
-          onClick={() => setActive(8)}
+          className="flex items-center cursor-pointer w-full mb-8 hover:text-[red] transition"
+          onClick={() => setActive(9)}
         >
           <MdOutlineAdminPanelSettings
             size={20}
-            color={active === 7 ? "red" : ""}
+            color={active === 9 ? "red" : ""}
           />
           <span
             className={`pl-3 ${
-              active === 8 ? "text-[red]" : ""
+              active === 9 ? "text-[red]" : ""
             } 800px:block hidden`}
           >
             Admin Dashboard
@@ -152,13 +167,13 @@ const ProfileSidebar = ({ active, setActive }: Props) => {
       </Link>
     )}
     <div
-      className="single_item flex items-center cursor-pointer w-full mb-8"
-    //   onClick={logoutHandler}
+      className="single_item flex items-center cursor-pointer w-full mb-8 hover:text-[red] transition"
+      onClick={logoutHandler}
     >
-      <AiOutlineLogin size={20} color={active === 8 ? "red" : ""} />
+      <AiOutlineLogin size={20} color={active === 10 ? "red" : ""} />
       <span
         className={`pl-3 ${
-          active === 8 ? "text-[red]" : ""
+          active === 10 ? "text-[red]" : ""
         } 800px:block hidden`}
       >
         Log out

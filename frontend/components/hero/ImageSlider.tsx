@@ -54,7 +54,7 @@ const ImageSlider = ({ images }: Props) => {
     </a>
     <div style={{ width: "100%", height: "100%", display: "flex", overflow: "hidden",}}>
       {images.map(({ url, alt }, index) => (
-        <Image src={url} alt={alt} height={2000} width={2000} aria-hidden={imageIndex !== index} className="img-slider-img"
+        <Image src={url} alt={alt} height={5000} width={5000} aria-hidden={imageIndex !== index} className="img-slider-img"
          style={{ translate: `${-100 * imageIndex}%` }} key={index}/>
       ))}
     </div>

@@ -10,7 +10,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { Providers } from './Provider';
 import { useEffect } from 'react'
 import store from '@/redux/store'
-import { loadUser } from '@/redux/actions/user'
+import { loadSeller, loadUser } from '@/redux/actions/user'
 import { SessionProvider } from 'next-auth/react'
 
 const inter = Inter({ subsets: ['latin'] })
@@ -23,6 +23,7 @@ export default function RootLayout({
 
   useEffect(() => {
     store.dispatch(loadUser())
+    store.dispatch(loadSeller())
   }, [])
 
   return (
