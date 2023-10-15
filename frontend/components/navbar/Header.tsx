@@ -20,6 +20,7 @@ import { RxCross1 } from "react-icons/rx"
 import { BiMenuAltLeft } from "react-icons/bi"
 import { BsPersonGear } from "react-icons/bs"
 import { useRouter } from "next/navigation"
+import useLoginModal from "@/hooks/UseLoginModal"
 
 interface Props {
   activeHeading?: number
@@ -41,13 +42,25 @@ const Header = ({ activeHeading }: Props) => {
   const [open, setOpen] = useState(false)
   const router = useRouter()
 
+  const loginModal = useLoginModal()
+
+  const [shouldReload, setShouldReload] = useState(false);
+
   const { data } = useSession()
 
   useEffect(() => {
     // Check if the user is authenticated and if session data is available
     if (!user && data) {
-      axios.post(`${server}/user/social-auth`, {email: data?.user?.email, name: data?.user?.name, avatar: data.user?.image, }, { withCredentials: true })}
+      axios.post(`${server}/user/social-auth`, {
+        email: data?.user?.email,
+        name: data?.user?.name,
+        avatar: data.user?.image,
+      }, { withCredentials: true })
+    }
   }, [user, data]);
+
+
+
 
   const handleSearchChange = (e: any) => {
     const term = e.target.value

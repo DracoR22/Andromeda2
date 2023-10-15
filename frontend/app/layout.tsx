@@ -12,6 +12,7 @@ import { useEffect } from 'react'
 import store from '@/redux/store'
 import { loadSeller, loadUser } from '@/redux/actions/user'
 import { SessionProvider } from 'next-auth/react'
+import LoginModal from '@/components/modals/LoginModal'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -31,6 +32,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <Providers>
           <SessionProvider>
+            <LoginModal/>
       <ToastContainer autoClose={3000}/>
         {children}
         </SessionProvider>

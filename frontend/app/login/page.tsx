@@ -2,7 +2,7 @@
 
 import Login from "@/components/auth/Login"
 import { useSelector } from "react-redux";
-import { redirect } from "next/navigation"
+import { redirect, useRouter } from "next/navigation"
 import { useSession } from "next-auth/react";
 
 const LoginPage = () => {
@@ -10,8 +10,13 @@ const LoginPage = () => {
   const { isAuthenticated, user } = useSelector((state: any) => state.user);
   const { data } = useSession()
 
-  if(user) {
-    redirect("/")
+  const router= useRouter()
+
+  if(user || data) {
+    router.push("/")
+    setTimeout(() => {
+      window.location.reload();
+    }, 3000);
   }
 
   return (
