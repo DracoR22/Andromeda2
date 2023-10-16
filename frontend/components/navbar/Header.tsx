@@ -16,9 +16,9 @@ import axios from "axios"
 import { server } from "@/utils/server"
 import Cart from "../cart/Cart"
 import Wishlist from "../wishlist/Wishlist"
-import { RxCross1 } from "react-icons/rx"
+import { RxCross1, RxPencil2 } from "react-icons/rx"
 import { BiMenuAltLeft } from "react-icons/bi"
-import { BsPersonGear } from "react-icons/bs"
+import { BsPencil, BsPersonGear } from "react-icons/bs"
 import { useRouter } from "next/navigation"
 import useLoginModal from "@/hooks/UseLoginModal"
 
@@ -29,6 +29,7 @@ interface Props {
 const Header = ({ activeHeading }: Props) => {
 
   const { isAuthenticated, user } = useSelector((state: any) => state.user);
+  const { seller } = useSelector((state: any) => state.seller)
 
   const [dropDown, setDropDown] = useState(false);
   const [active, setActive] = useState(false)
@@ -135,10 +136,15 @@ const Header = ({ activeHeading }: Props) => {
           </div>
           {/* ICONS */}
           <div className="flex items-center gap-2">
-
-          <div className="relative cursor-pointer" onClick={() => router.push("/shop-create")}>
-              <BsPersonGear size={25} title="Become a seller"/>
+          {seller ? (
+            <div className="relative cursor-pointer" onClick={() => router.push("/dashboard")}>
+              <RxPencil2 size={23} title="Dashboard"/>
             </div>
+            ) : (
+              <div className="relative cursor-pointer" onClick={() => router.push("/shop-login")}>
+              <BsPersonGear size={25} title="Become a seller"/>
+              </div>
+            ) }
 
             <div className="relative cursor-pointer" onClick={() => setOpenWishlist(true)}>
               <AiOutlineHeart size={25}/>

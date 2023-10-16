@@ -22,17 +22,13 @@ const ShopLoginComp = () => {
     const [password, setPassword] = useState("");
     const [visible, setVisible] = useState(false);
 
-    if(seller) {
-        redirect("/")
-    }
-
     const onSubmit = async (e: any) => {
        e.preventDefault()
        try {
         setIsLoading(true)
         await axios.post(`${server}/shop/login-shop`, { email, password }, { withCredentials: true })
         toast.success("Logged in to your shop")
-        router.push(`/shop/${seller._id}`)
+        router.push(`/dashboard`)
         setTimeout(() => {
           window.location.reload();
         }, 500);
@@ -42,6 +38,10 @@ const ShopLoginComp = () => {
         setIsLoading(false)
        }
     }
+
+    if(seller) {
+      redirect("/")
+  }
 
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col justify-center py-12 sm:px-6 lg:px-8">

@@ -20,7 +20,7 @@ export const loadUser = () => async(dispatch: any) => {
   }
 }
 
-// load seller
+// load Seller
 export const loadSeller = () => async (dispatch: any) => {
   try {
     dispatch({

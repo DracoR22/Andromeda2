@@ -5,6 +5,7 @@ const cors = require("cors")
 
 const userRoutes = require("./routes/userRoutes")
 const shopRoutes = require("./routes/shopRoutes")
+const productRoutes = require("./routes/productRoutes")
 
 const app = express()
 
@@ -23,6 +24,7 @@ app.get("/", (req, res, next) => {
 // Routes
 app.use("/api/v2/user", userRoutes)
 app.use("/api/v2/shop", shopRoutes)
+app.use("/api/v2/product", productRoutes)
 
 // Middleware Calls
 app.use(ErrorHandler)

@@ -4,6 +4,7 @@ const User = require("../model/user");
 const ErrorHandler = require("../utils/ErrorHandler");
 const Shop = require("../model/shop");
 
+// Check If User Is Authenticated Middleware
 exports.isAuthenticated = catchAsyncErrors(async(req, res, next) => {
     const { token } = req.cookies
 
@@ -18,7 +19,7 @@ exports.isAuthenticated = catchAsyncErrors(async(req, res, next) => {
     next()
 })
 
-
+// Check If User Has A Seller Account Middleware
 exports.isSeller = catchAsyncErrors(async(req, res, next) => {
     const { seller_token } = req.cookies
 
