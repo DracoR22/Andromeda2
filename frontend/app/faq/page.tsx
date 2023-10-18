@@ -75,10 +75,10 @@ const Faq = () => {
             {activeTab === 2 && (
               <div className="mt-4">
                 <p className="text-base text-gray-500">
-                  If you're not satisfied with your purchase, we accept returns
+                  If you&apos;re not satisfied with your purchase, we accept returns
                   within 30 days of delivery. To initiate a return, please email
                   us at support@myecommercestore.com with your order number and a
-                  brief explanation of why you're returning the item.
+                  brief explanation of why you&apos;re returning the item.
                 </p>
               </div>
             )}
@@ -225,7 +225,7 @@ const Faq = () => {
                 <p className="text-base text-gray-500">
                   Unfortunately, once an order has been placed, we are not able to
                   make changes or cancellations. If you no longer want the items
-                  you've ordered, you can return them for a refund within 30 days
+                  you&apos;ve ordered, you can return them for a refund within 30 days
                   of delivery.
                 </p>
               </div>

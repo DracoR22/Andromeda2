@@ -37,7 +37,7 @@ createProduct: catchAsyncErrors(async(req, res, next) => {
                 });
               }
 
-              // Extract Everything From re.body
+              // Extract Everything From req.body
               const productData = req.body;
               // Set The Product Images To Be Our Array
               productData.images = imagesLinks;
@@ -55,5 +55,60 @@ createProduct: catchAsyncErrors(async(req, res, next) => {
     } catch (error) {
         return next(new ErrorHandler(error.message, 500));
     }
+}),
+//--------------------------------------------//Get All Shop Products//------------------------------------------//
+getAllShopProducts: catchAsyncErrors(async(req, res, next) => {
+  try {
+    
+    const products = await Product.find({ shopId: req.params.id })
+
+    res.status(201).json({
+      success: true,
+      products
+    })
+  } catch (error) {
+    return next(new ErrorHandler(error.message, 500));
+  }
+}),
+//------------------------------------------------//Delete Product//----------------------------------------------//
+deleteProduct: catchAsyncErrors(async(req, res, next) => {
+  try {
+    // Get Product By Id Using Params
+    const productId = req.params.id
+
+    const product = await Product.findByIdAndDelete(productId)
+
+    if(!product) {
+      return next(new ErrorHandler("Product not found", 400));
+    }
+
+    // Remove All Images From Cloudinary
+    for (let i = 0; i < product.images.length; i++) {
+      const result = await cloudinary.v2.uploader.destroy(
+        product.images[i].public_id
+      );
+    }
+
+    res.status(201).json({
+      success: true,
+      message: "Product has been deleted"
+    })
+  } catch (error) {
+    return next(new ErrorHandler(error.message, 500));
+  }
+}),
+
+//-----------------------------------------------//Get All Products//---------------------------------------------//
+getAllProducts: catchAsyncErrors(async(req, res, next) => {
+  try {
+    const products = await Product.find().sort({ createdAt: -1 })
+
+    res.status(201).json({
+      success: true,
+      products
+    })
+  } catch (error) {
+    return next(new ErrorHandler(error.message, 500));
+  }
 })
 }

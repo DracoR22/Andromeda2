@@ -4,11 +4,18 @@ import CatLoader from "@/components/loaders/CatLoader"
 import ShopInfo from "@/components/shop/ShopInfo"
 import ShopProfileData from "@/components/shop/ShopProfileData"
 import styles from "@/styles/styles"
+import { redirect, useRouter } from "next/navigation"
 import { useSelector } from "react-redux"
 
 const ShopPage = ({ params }: { params: { shopId: string }}) => {
 
   const { seller, isLoading } = useSelector((state: any) => state.seller)
+
+  const router = useRouter()
+
+  if(!seller) {
+    redirect("/")
+  }
 
   return (
     <>
@@ -23,7 +30,7 @@ const ShopPage = ({ params }: { params: { shopId: string }}) => {
        <ShopInfo seller={seller} isOwner={true} />
        </div>
          <div className="w-[72%] rounded-[4px]">
-          <ShopProfileData isOwner={true} />
+          <ShopProfileData isOwner={true} id={params.shopId}/>
          </div>
       </div>
      </div>

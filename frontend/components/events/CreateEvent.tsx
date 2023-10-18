@@ -14,7 +14,7 @@ interface Props {
     seller: any
 }
 
-const CreateProduct = ({ seller }: Props) => {
+const CreateEvent = ({ seller }: Props) => {
 
   const router = useRouter()
   const dispatch = useDispatch()
@@ -27,8 +27,34 @@ const CreateProduct = ({ seller }: Props) => {
   const [originalPrice, setOriginalPrice] = useState<any>();
   const [discountPrice, setDiscountPrice] = useState<any>();
   const [stock, setStock] = useState<any>();
+  const [startDate, setStartDate] = useState<Date | null>(null)
+  const [endDate, setEndDate] = useState<Date | null>(null)
 
-  const { isLoading, success, error } = useSelector((state: any) => state.products)
+  const handleStartDateChange = (e: any) => {
+    const startDate = new Date(e.target.value);
+    const minEndDate = new Date(startDate.getTime() + 3 * 24 * 60 * 60 * 1000);
+    setStartDate(startDate);
+    setEndDate(null);
+    
+    
+   const endDateInput = document.getElementById("end-date") as HTMLInputElement | null;
+   if (endDateInput) {
+    endDateInput.min = minEndDate.toISOString().slice(0, 10);
+    }
+  }
+
+  const handleEndDateChange = (e: any) => {
+    const endDate = new Date(e.target.value);
+    setEndDate(endDate);
+  };
+
+  const today = new Date().toISOString().slice(0, 10);
+
+  const minEndDate = startDate
+    ? new Date(startDate.getTime() + 3 * 24 * 60 * 60 * 1000)
+        .toISOString()
+        .slice(0, 10)
+    : "";
 
   //Upload Images
   const handleImageChange = (e: any) => {
@@ -58,7 +84,7 @@ const CreateProduct = ({ seller }: Props) => {
     images.forEach((image: any) => {
       newForm.set("images", image);
     });
-    await axios.post(`${server}/product/create-product`, {
+    await axios.post(`${server}/event/create-event`, {
       name,
       description,
       category,
@@ -66,11 +92,13 @@ const CreateProduct = ({ seller }: Props) => {
       originalPrice,
       discountPrice,
       stock,
+      start_Date: startDate?.toISOString(),
+      Finish_Date: endDate?.toISOString(),
       shopId: seller._id,
       images,
   })
 
-  toast.success("Product Created!")
+  toast.success("Event Created!")
    router.push("/dashboard")
    router.refresh()
     } catch (error: any) {
@@ -80,8 +108,8 @@ const CreateProduct = ({ seller }: Props) => {
 
   return (
     <div className="w-[90%] 800px:w-[50%] bg-white  shadow h-[80vh] rounded-[4px] p-3 overflow-y-scroll">
-        <h5 className="text-[30px] font-semibold text-center">Create Product</h5>
-          {/* CREATE PRODUCT FORM */}
+        <h5 className="text-[30px] font-semibold text-center">Create Event</h5>
+          {/* CREATE EVENT FORM */}
           <form onSubmit={handleSubmit}>
         <br />
         <div>
@@ -95,7 +123,7 @@ const CreateProduct = ({ seller }: Props) => {
             value={name}
             className="mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
             onChange={(e) => setName(e.target.value)}
-            placeholder="Enter your product name..."
+            placeholder="Enter your event product name..."
           />
         </div>
         <br />
@@ -105,7 +133,7 @@ const CreateProduct = ({ seller }: Props) => {
             Description <span className="text-red-500">*</span>
           </label>
           <textarea required name="description" value={description} className="mt-2 appearance-none block w-full pt-2 px-3 border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-            onChange={(e) => setDescription(e.target.value)} placeholder="Enter your product description..."
+            onChange={(e) => setDescription(e.target.value)} placeholder="Enter your event product description..."
           ></textarea>
         </div>
         <br />
@@ -138,7 +166,7 @@ const CreateProduct = ({ seller }: Props) => {
             value={tags}
             className="mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
             onChange={(e) => setTags(e.target.value)}
-            placeholder="Enter your product tags..."
+            placeholder="Enter your event product tags..."
           />
         </div>
         <br />
@@ -151,7 +179,7 @@ const CreateProduct = ({ seller }: Props) => {
             value={originalPrice}
             className="mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
             onChange={(e) => setOriginalPrice(e.target.value)}
-            placeholder="Enter your product price..."
+            placeholder="Enter your event product price..."
           />
         </div>
         <br />
@@ -166,7 +194,7 @@ const CreateProduct = ({ seller }: Props) => {
             value={discountPrice}
             className="mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
             onChange={(e) => setDiscountPrice(e.target.value)}
-            placeholder="Enter your product price with discount..."
+            placeholder="Enter your event product price with discount..."
           />
         </div>
         <br />
@@ -181,7 +209,41 @@ const CreateProduct = ({ seller }: Props) => {
             value={stock}
             className="mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
             onChange={(e) => setStock(e.target.value)}
-            placeholder="Enter your product stock..."
+            placeholder="Enter your event product stock..."
+          />
+        </div>
+        <br />
+        <div>
+            {/* EVENT START DATE */}
+          <label className="pb-2">
+            Event Start Date <span className="text-red-500">*</span>
+          </label>
+          <input
+            type="date"
+            name="price"
+            id="start-date"
+            value={startDate ? startDate.toISOString().slice(0, 10) : ""}
+            className="mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+            onChange={handleStartDateChange}
+            min={today}
+            placeholder="Enter your event product stock..."
+          />
+        </div>
+        <br />
+        <div>
+            {/* EVENT END DATE */}
+          <label className="pb-2">
+            Event End Date <span className="text-red-500">*</span>
+          </label>
+          <input
+            type="date"
+            name="price"
+            id="start-date"
+            value={endDate ? endDate.toISOString().slice(0, 10) : ""}
+            className="mt-2 appearance-none block w-full px-3 h-[35px] border border-gray-300 rounded-[3px] placeholder-gray-400 focus:outline-none focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+            onChange={handleEndDateChange}
+            min={minEndDate}
+            placeholder="Enter your event product stock..."
           />
         </div>
         <br />
@@ -220,4 +282,4 @@ const CreateProduct = ({ seller }: Props) => {
   )
 }
 
-export default CreateProduct
+export default CreateEvent

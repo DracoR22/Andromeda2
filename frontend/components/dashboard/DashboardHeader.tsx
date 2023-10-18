@@ -28,29 +28,29 @@ const DashboardHeader = ({ seller }: Props) => {
         <Link href="/dashboard/coupons" className="800px:block hidden">
           <AiOutlineGift
             size={30}
-            className="mx-5 cursor-pointer hover:text-[#3bc177]"
+            className="mx-5 cursor-pointer hover:text-[#3bc177] transition"
           />
         </Link>
         <Link href="/dashboard-events" className="800px:block hidden">
           <MdOutlineLocalOffer
           
-            size={30}
-            className="mx-5 cursor-pointer hover:text-[#3bc177]"
+            size={25}
+            className="mx-5 cursor-pointer hover:text-[#3bc177] transition"
           />
         </Link>
         <Link href="/dashboard-products" className="800px:block hidden">
           <FiShoppingBag
-            size={30}
-            className="mx-5 cursor-pointer hover:text-[#3bc177]"
+            size={25}
+            className="mx-5 cursor-pointer hover:text-[#3bc177] transition"
           />
         </Link>
         <Link href="/dashboard-orders" className="800px:block hidden">
-          <FiPackage size={30} className="mx-5 cursor-pointer hover:text-[#3bc177]" />
+          <FiPackage size={25} className="mx-5 cursor-pointer hover:text-[#3bc177] transition" />
         </Link>
         <Link href="/dashboard-messages" className="800px:block hidden">
           <BiMessageSquareDetail
-            size={30}
-            className="mx-5 cursor-pointer hover:text-[#3bc177]"
+            size={25}
+            className="mx-5 cursor-pointer hover:text-[#3bc177] transition"
           />
         </Link>
         <Link href={`/shop/${seller._id}`}>

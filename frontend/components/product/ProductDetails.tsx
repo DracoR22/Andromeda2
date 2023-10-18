@@ -1,10 +1,13 @@
 'use client'
 
+import { getAllProductsShop } from "@/redux/actions/product"
 import styles from "@/styles/styles"
+import Image from "next/image"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { AiFillHeart, AiOutlineHeart, AiOutlineMessage, AiOutlineShoppingCart } from "react-icons/ai"
+import { useDispatch } from "react-redux"
 
 interface Props {
     data: any
@@ -16,6 +19,16 @@ const ProductDetails = ({ data }: Props) => {
    const [click, setClick] = useState(false)
    const [select, setSelect] = useState(1)
    const router = useRouter()
+   const dispatch = useDispatch();
+
+  //  useEffect(() => {
+  //   dispatch(getAllProductsShop(data && data?.shop._id));
+  //   if (wishlist && wishlist.find((i) => i._id === data?._id)) {
+  //     setClick(true);
+  //   } else {
+  //     setClick(false);
+  //   }
+  // }, [data, wishlist]);
 
    const incrementCount = () => {
     setCount(count + 1);
@@ -39,15 +52,28 @@ const ProductDetails = ({ data }: Props) => {
             <div className="w-full py-5">
               <div className="block w-full 800px:flex">
                 <div className="w-full 800px:w-[50%]">
-                 <img src={data.image_Url[select].url} alt="" className="w-[80%]"/>
-               
+                 <Image src={`${data && data.images[select]?.url}`} alt="" className="w-[80%]" width={1000} height={1000}/>
                 <div className="w-full flex">
-                    <div className={`${select === 0 && "border"} cursor-pointer`}>
-                       <img src={data?.image_Url[0].url} alt="" className="h-[200px]" onClick={() => setSelect(0)}/>
-                    </div>
-                    <div className={`${select === 1 && "border"} cursor-pointer`}>
-                       <img src={data?.image_Url[1].url} alt="" className="h-[200px]" onClick={() => setSelect(0)}/>
-                    </div>
+                {data &&
+                    data.images.map((i: any, index: number) => (
+                      <div
+                        className={`${
+                          select === 0 ? "border" : "null"
+                        } cursor-pointer`}
+                      >
+                        <img
+                          src={`${i?.url}`}
+                          alt=""
+                          className="h-[150px] overflow-hidden mr-3 mt-3"
+                          onClick={() => setSelect(index)}
+                        />
+                      </div>
+                    ))}
+                  <div
+                    className={`${
+                      select === 1 ? "border" : "null"
+                    } cursor-pointer`}
+                  ></div>
                   </div>
                   </div>
                 <div className="w-full 800px:w-[50%] pt-5">
@@ -57,10 +83,10 @@ const ProductDetails = ({ data }: Props) => {
                   <p className="text-sm text-neutral-600 py-2">{data.description}</p>
                   <div className="flex pt-3">
                      <h4 className={`${styles.productDiscountPrice}`}>
-                      ${data.discount_price}
+                      ${data.discountPrice}
                      </h4>
                      <h3 className={`${styles.price} text-red-500`}>
-                       {data.price && "$" + data.price}
+                       {data.originalPrice ? data.originalPrice + "$" : null}
                      </h3>
                   </div>
                   <div className="flex items-center mt-12 justify-between pr-3">
@@ -106,13 +132,13 @@ const ProductDetails = ({ data }: Props) => {
                   </span>
                 </div>
                  <div className="flex items-center pt-8">
-                   <img src={data.shop.shop_avatar.url} alt="" className="w-[50px] h-[50px] rounded-full mr-2"/>
+                   <img src={data?.shop?.avatar?.url} alt="" className="w-[50px] h-[50px] rounded-full mr-2"/>
                    <div className="pr-8">
                      <h3 className={`${styles.shop_name} pb-1 pt-1`}>
                        {data.shop.name}
                      </h3>
                      <h5 className="pb-3 text-[15px]">
-                       ({data.shop.ratings}) Ratings
+                       Ratings
                      </h5>
                    </div>
                    <div className={`${styles.button} bg-[#6443d1] mt-4 rounded h-11 px-3`} onClick={handleMessageSubmit}>
@@ -185,7 +211,7 @@ const ProductDetailsInfo = ({ data }: ProductDetailsInfoProps) => {
       {active === 2 ? (
         <div className="w-full min-h-[40vh] flex flex-col items-center py-3 overflow-y-scroll">
           {data && data.reviews.map((item: any, index: number) => (
-              <div className="w-full flex my-2">
+              <div className="w-full flex my-2" key={index}>
                 <img
                   src={`${item.user.avatar?.url}`}
                   alt=""

@@ -1,7 +1,7 @@
 import { server } from "@/utils/server"
 import axios from "axios"
 
-//Load User
+// Load User
 export const loadUser = () => async(dispatch: any) => {
   try {
     dispatch: ({

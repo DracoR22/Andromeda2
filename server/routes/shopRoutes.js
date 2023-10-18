@@ -8,5 +8,6 @@ router.post('/create-shop', shopController.createShop)
 router.post('/activation', shopController.activateShop)
 router.post('/login-shop', shopController.loginShop)
 router.get('/get-seller', isSeller, shopController.getShop)
+router.get('/logout', shopController.LogoutShop)
 
 module.exports = router

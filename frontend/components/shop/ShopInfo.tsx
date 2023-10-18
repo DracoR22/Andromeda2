@@ -7,6 +7,7 @@ import styles from "@/styles/styles"
 import Link from "next/link"
 import axios from "axios"
 import { server } from "@/utils/server"
+import { redirect, useRouter } from "next/navigation"
 
 interface Props {
     isOwner: boolean
@@ -15,11 +16,16 @@ interface Props {
 
 const ShopInfo = ({ isOwner, seller }: Props) => {
 
+   const router = useRouter()
+   const { products } = useSelector((state: any) => state.products);
+
     const logoutHandler = async () => {
         axios.get(`${server}/shop/logout`,{
           withCredentials: true,
         });
-        window.location.reload();
+        
+          window.location.reload();
+        
       };
 
   return (
@@ -46,7 +52,7 @@ const ShopInfo = ({ isOwner, seller }: Props) => {
       </div>
       <div className="p-3">
         <h5 className="font-[600]">Total Products</h5>
-        {/* <h4 className="text-[#000000a6]">{products && products.length}</h4> */}
+        <h4 className="text-[#000000a6]">{products && products.length}</h4>
       </div>
       <div className="p-3">
         <h5 className="font-[600]">Shop Ratings</h5>
@@ -59,11 +65,11 @@ const ShopInfo = ({ isOwner, seller }: Props) => {
       {isOwner && (
         <div className="py-3 px-4">
            <Link href="/settings">
-           <div className={`${styles.button} !w-full !h-[42px] !rounded-[5px] mb-6`}>
+           <div className={`flex items-center justify-center w-full h-[42px] rounded-full mb-6 bg-[#3bc177] hover:bg-[#3b9764] transition`}>
             <span className="text-white">Edit Shop</span>
           </div>
            </Link>
-          <div className={`${styles.button} !w-full !h-[42px] !rounded-[5px]`}
+          <div className={`flex cursor-pointer items-center justify-center w-full h-[42px] rounded-full mb-6 bg-[#3bc177] hover:bg-[#3b9764] transition`}
           onClick={logoutHandler}
           >
             <span className="text-white">Log Out</span>

@@ -13,6 +13,8 @@ import store from '@/redux/store'
 import { loadSeller, loadUser } from '@/redux/actions/user'
 import { SessionProvider } from 'next-auth/react'
 import LoginModal from '@/components/modals/LoginModal'
+import { getAllProducts } from '@/redux/actions/product'
+import { getAllEvents } from '@/redux/actions/event'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -25,6 +27,8 @@ export default function RootLayout({
   useEffect(() => {
     store.dispatch(loadUser())
     store.dispatch(loadSeller())
+    store.dispatch(getAllProducts());
+    store.dispatch(getAllEvents());
   }, [])
 
   return (
@@ -33,7 +37,7 @@ export default function RootLayout({
         <Providers>
           <SessionProvider>
             <LoginModal/>
-      <ToastContainer autoClose={3000}/>
+      <ToastContainer autoClose={3000} theme='dark'/>
         {children}
         </SessionProvider>
         </Providers>

@@ -6,6 +6,8 @@ const cors = require("cors")
 const userRoutes = require("./routes/userRoutes")
 const shopRoutes = require("./routes/shopRoutes")
 const productRoutes = require("./routes/productRoutes")
+const eventRoutes = require("./routes/eventRoutes")
+const couponCodeRoutes = require("./routes/couponCodeRoutes")
 
 const app = express()
 
@@ -25,6 +27,8 @@ app.get("/", (req, res, next) => {
 app.use("/api/v2/user", userRoutes)
 app.use("/api/v2/shop", shopRoutes)
 app.use("/api/v2/product", productRoutes)
+app.use("/api/v2/event", eventRoutes)
+app.use("/api/v2/coupon", couponCodeRoutes)
 
 // Middleware Calls
 app.use(ErrorHandler)
