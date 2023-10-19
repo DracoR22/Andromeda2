@@ -1,32 +1,44 @@
 'use client'
 
+import Footer from "@/components/Footer";
+import CatLoader from "@/components/loaders/CatLoader";
 import Header from "@/components/navbar/Header";
 import ProductCard from "@/components/product/ProductCard";
-import { productData } from "@/static/data";
 import styles from "@/styles/styles";
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
 
 const BestSellingPage = () => {
 
     const [data, setData] = useState<any>([]);
+    const {allProducts, isLoading} = useSelector((state: any) => state.products);
 
     useEffect(() => {
-          const d = productData && productData.sort((a, b) => b.total_sell - a.total_sell);
-          setData(d);
-      }, [productData]);
+      const allProductsData = allProducts ? [...allProducts] : [];
+      const sortedData = allProductsData?.sort((a, b) => b.sold_out - a.sold_out); 
+      setData(sortedData);
+    }, [allProducts]);
 
   return (
-    <div>
-    <Header activeHeading={2}/>
-    <br />
-    <br />
-    <div className={`${styles.section}`}>
-     <div className="grid grid-cols-1 gap-[20px] md:grid-cols-2 md:gap-[25px] lg:grid-cols-4 lg:gap-[25px] xl:grid-cols-5 xl:gap-[30px] mb-12">
-       {data && data.map((i: any, index: number) => <ProductCard data={i} key={index} />)}
+    <>
+    {isLoading ? (
+       <CatLoader/>
+     ) : (
+       <div>
+       <Header activeHeading={2} />
+       <br />
+       <br />
+       <div className={`${styles.section}`}>
+         <div className="grid mx-10 grid-cols-1 gap-[20px] md:grid-cols-2 md:gap-[25px] lg:grid-cols-4 lg:gap-[25px] xl:grid-cols-5 xl:gap-[30px] mb-12">
+           {data && data.map((i: any, index: number) => <ProductCard data={i} key={index} />)}
+         </div>
+       </div>
+       <Footer />
      </div>
-    </div>
-  </div>
+     )
+    }
+    </>
   )
 }
 

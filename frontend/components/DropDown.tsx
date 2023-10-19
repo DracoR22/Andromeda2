@@ -15,7 +15,7 @@ const DropDown = ({ categoriesData, setDropDown }: Props) => {
     setDropDown(false);
     setTimeout(() => {
       window.location.reload();
-    }, 500);
+    }, 100);
   };
 
   return (

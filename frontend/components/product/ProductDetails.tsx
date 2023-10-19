@@ -7,7 +7,7 @@ import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 import { AiFillHeart, AiOutlineHeart, AiOutlineMessage, AiOutlineShoppingCart } from "react-icons/ai"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 
 interface Props {
     data: any
@@ -15,20 +15,22 @@ interface Props {
 
 const ProductDetails = ({ data }: Props) => {
 
+  const { products } = useSelector((state: any) => state.products);
+
    const [count, setCount] = useState(1)
    const [click, setClick] = useState(false)
    const [select, setSelect] = useState(1)
    const router = useRouter()
    const dispatch = useDispatch();
 
-  //  useEffect(() => {
-  //   dispatch(getAllProductsShop(data && data?.shop._id));
-  //   if (wishlist && wishlist.find((i) => i._id === data?._id)) {
-  //     setClick(true);
-  //   } else {
-  //     setClick(false);
-  //   }
-  // }, [data, wishlist]);
+   useEffect(() => {
+    dispatch(getAllProductsShop(data && data?.shop._id));
+    // if (wishlist && wishlist.find((i) => i._id === data?._id)) {
+    //   setClick(true);
+    // } else {
+    //   setClick(false);
+    // }
+  }, [data]);
 
    const incrementCount = () => {
     setCount(count + 1);
@@ -52,28 +54,19 @@ const ProductDetails = ({ data }: Props) => {
             <div className="w-full py-5">
               <div className="block w-full 800px:flex">
                 <div className="w-full 800px:w-[50%]">
-                 <Image src={`${data && data.images[select]?.url}`} alt="" className="w-[80%]" width={1000} height={1000}/>
+                 <Image src={`${data && data.images[select]?.url}`} alt="" className="w-[80%] h-[500px] object-cover" width={500} height={500}/>
                 <div className="w-full flex">
-                {data &&
-                    data.images.map((i: any, index: number) => (
-                      <div
-                        className={`${
-                          select === 0 ? "border" : "null"
-                        } cursor-pointer`}
-                      >
+                {data && data.images.map((i: any, index: number) => (
+                      <div className={`${select === 0 ? "border" : "null"} cursor-pointer`}>
                         <img
                           src={`${i?.url}`}
                           alt=""
-                          className="h-[150px] overflow-hidden mr-3 mt-3"
+                          className="h-[100px] overflow-hidden mr-3 mt-3 object-cover"
                           onClick={() => setSelect(index)}
                         />
                       </div>
                     ))}
-                  <div
-                    className={`${
-                      select === 1 ? "border" : "null"
-                    } cursor-pointer`}
-                  ></div>
+                  <div className={`${select === 1 ? "border" : "null"} cursor-pointer`}></div>
                   </div>
                   </div>
                 <div className="w-full 800px:w-[50%] pt-5">
@@ -126,22 +119,22 @@ const ProductDetails = ({ data }: Props) => {
                    )}
                  </div>
                  </div>
-                 <div className={`${styles.button} bg-black mt-6 rounded h-11 flex items-center`}>
+                 <div className={`${styles.button} hover:bg-gray-900 transition mt-6 rounded h-11 flex items-center`}>
                   <span className="text-white flex items-center">
                     Add to cart <AiOutlineShoppingCart className="ml-1"/>
                   </span>
                 </div>
                  <div className="flex items-center pt-8">
-                   <img src={data?.shop?.avatar?.url} alt="" className="w-[50px] h-[50px] rounded-full mr-2"/>
+                   <img src={data?.shop?.avatar?.url} alt="" className="w-[50px] h-[50px] rounded-full mr-2 object-cover"/>
                    <div className="pr-8">
-                     <h3 className={`${styles.shop_name} pb-1 pt-1`}>
+                     <h3 className={`text-sm font-semibold pb-1 pt-1`}>
                        {data.shop.name}
                      </h3>
-                     <h5 className="pb-3 text-[15px]">
+                     <h5 className="pb-3 text-sm text-neutral-600">
                        Ratings
                      </h5>
                    </div>
-                   <div className={`${styles.button} bg-[#6443d1] mt-4 rounded h-11 px-3`} onClick={handleMessageSubmit}>
+                   <div className={`bg-black flex items-center cursor-pointer hover:bg-gray-900 transition mt-4 rounded h-11 px-3`} onClick={handleMessageSubmit}>
                      <span className="text-white flex items-center">
                        Contact Seller <AiOutlineMessage className="ml-1"/>
                      </span>
@@ -150,7 +143,7 @@ const ProductDetails = ({ data }: Props) => {
                 </div>
               </div>
             </div>
-            <ProductDetailsInfo data={data}/>
+            <ProductDetailsInfo data={data} products={products}/>
           </div>
         </>
        )}
@@ -160,9 +153,10 @@ const ProductDetails = ({ data }: Props) => {
 
 interface ProductDetailsInfoProps {
   data: any
+  products: any
 }
 
-const ProductDetailsInfo = ({ data }: ProductDetailsInfoProps) => {
+const ProductDetailsInfo = ({ data, products }: ProductDetailsInfoProps) => {
   const [active, setActive] = useState(1);
 
   return (
@@ -242,11 +236,11 @@ const ProductDetailsInfo = ({ data }: ProductDetailsInfoProps) => {
               <div className="flex items-center">
                 <img
                   src={`${data?.shop?.avatar?.url}`}
-                  className="w-[50px] h-[50px] rounded-full"
+                  className="w-[50px] h-[50px] rounded-full object-cover"
                   alt=""
                 />
                 <div className="pl-3">
-                  <h3 className={`${styles.shop_name}`}>{data.shop.name}</h3>
+                  <h3 className='text-sm font-semibold'>{data.shop.name}</h3>
                   <h5 className="pb-2 text-[15px]">
                     {/* ({averageRating}/5) Ratings */}
                   </h5>
@@ -259,23 +253,23 @@ const ProductDetailsInfo = ({ data }: ProductDetailsInfoProps) => {
             <div className="text-left">
               <h5 className="font-[600]">
                 Joined on:{" "}
-                <span className="font-[500]">
+                <span className="text-sm text-neutral-600">
                   {data.shop?.createdAt?.slice(0, 10)}
                 </span>
               </h5>
               <h5 className="font-[600] pt-3">
                 Total Products:{" "}
-                <span className="font-[500]">
-                  {/* {products && products.length} */} products number
+                <span className="text-sm text-neutral-600">
+                  {products && products.length}
                 </span>
               </h5>
               <h5 className="font-[600] pt-3">
                 Total Reviews:{" "}
-                {/* <span className="font-[500]">{totalReviewsLength}</span> */}
+                {/* <span className="text-sm text-neutral-600">{totalReviewsLength}</span> */}
               </h5>
-              <Link href="/">
+              <Link href={`/shop/preview/${data.shop._id}`}>
                 <div
-                  className={`${styles.button} !rounded-[4px] !h-[39.5px] mt-3`}
+                  className={`${styles.button} hover:bg-gray-900 transition !rounded-[4px] !h-[39.5px] mt-3`}
                 >
                   <h4 className="text-white">Visit Shop</h4>
                 </div>

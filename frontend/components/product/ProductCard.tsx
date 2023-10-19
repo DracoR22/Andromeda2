@@ -29,7 +29,7 @@ const ProductCard = ({ data, isShop, isEvent }: Props) => {
         <Image src={data.images && data.images[0]?.url} alt="" className="w-full h-[170px] object-contain" width={200} height={200}/>
       </Link>
       <Link href="/">
-        <h5 className={`font-medium text-sm text-neutral-600 mb-2`}>{data.shop.name}</h5>
+        <h5 className={`font-semibold text-sm mb-2`}>{data.shop.name}</h5>
       </Link>
       <Link href={`/product/${product_name}`}>
         <h4 className="pb-3 font-medium text-neutral-600 text-sm">

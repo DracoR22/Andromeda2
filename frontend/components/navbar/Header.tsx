@@ -30,6 +30,7 @@ const Header = ({ activeHeading }: Props) => {
 
   const { isAuthenticated, user } = useSelector((state: any) => state.user);
   const { seller } = useSelector((state: any) => state.seller)
+  const { allProducts } = useSelector((state: any) => state.products)
 
   const [dropDown, setDropDown] = useState(false);
   const [active, setActive] = useState(false)
@@ -70,7 +71,7 @@ const Header = ({ activeHeading }: Props) => {
     if(term === "") {
       setSearchData(null);
     } else {
-      const filteredProducts: any = productData && productData.filter((product) => 
+      const filteredProducts: any = allProducts && allProducts.filter((product: any) => 
       product.name.toLowerCase().includes(term.toLowerCase())
        )
 
@@ -111,8 +112,9 @@ const Header = ({ activeHeading }: Props) => {
 
                     return (
                       <Link href={`/product/${Product_name}`} key={index}>
-                        <div className="w-full flex items-start-py-3">
-                          <img src={`${i.image_Url[0].url}`} alt="" className="w-[40px] h-[40px] mr-[10px]"/>
+                        <div className="w-full flex items-start-py-3 mt-2">
+                          <Image src={`${i.images[0]?.url}`} alt="" width={40} height={40}
+                          className="w-[40px] h-[40px] mr-[10px] object-cover"/>
                           <h1 className="text-xs text-neutral-700 truncate">{i.name}</h1>
                         </div>
                       </Link>
@@ -138,7 +140,7 @@ const Header = ({ activeHeading }: Props) => {
           <div className="flex items-center gap-2">
           {seller ? (
             <div className="relative cursor-pointer" onClick={() => router.push("/dashboard")}>
-              <RxPencil2 size={23} title="Dashboard"/>
+              <Image src={seller.avatar?.url} alt="" width={50} height={50} className="rounded-full object-cover w-[35px] h-[35px]"/>
             </div>
             ) : (
               <div className="relative cursor-pointer" onClick={() => router.push("/shop-login")}>

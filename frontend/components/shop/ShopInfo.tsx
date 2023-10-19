@@ -1,23 +1,44 @@
 'use client'
 
 import Image from "next/image"
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import CatLoader from "../loaders/CatLoader"
 import styles from "@/styles/styles"
 import Link from "next/link"
 import axios from "axios"
 import { server } from "@/utils/server"
 import { redirect, useRouter } from "next/navigation"
+import { useEffect, useState } from "react"
+import { getAllProductsShop } from "@/redux/actions/product"
 
 interface Props {
     isOwner: boolean
-    seller: any
+    seller?: any
+    id?: string
 }
 
-const ShopInfo = ({ isOwner, seller }: Props) => {
+const ShopInfo = ({ isOwner, seller, id }: Props) => {
 
    const router = useRouter()
    const { products } = useSelector((state: any) => state.products);
+   const dispatch = useDispatch();
+
+   const [isLoading,setIsLoading] = useState(false);
+   const [data, setData] = useState<any>({});
+
+   
+  useEffect(() => {
+    dispatch(getAllProductsShop(id));
+    setIsLoading(true);
+    axios.get(`${server}/shop/get-shop-info/${id}`).then((res) => {
+     setData(res.data.shop);
+     setIsLoading(false);
+    }).catch((error) => {
+      console.log(error);
+      setIsLoading(false);
+    })
+  }, [])
+
 
     const logoutHandler = async () => {
         axios.get(`${server}/shop/logout`,{
@@ -32,23 +53,23 @@ const ShopInfo = ({ isOwner, seller }: Props) => {
     <>
         <div className="w-full py-5">
         <div className="w-full flex item-center justify-center">
-          <Image src={`${seller.avatar?.url}`} alt="" width={150} height={150}
+          <Image src={data.avatar?.url || ''} alt="" width={150} height={150}
           className="w-[150px] h-[150px] object-cover rounded-full"/>
         </div>
         <h3 className="text-center py-2 text-[20px]">
-            {seller.name}
+            {data.name}
         </h3>
         <p className="text-[16px] text-[#000000a6] p-[10px] flex items-center">
-            {seller.description}
+            {data.description}
         </p>
       </div>
       <div className="p-3">
         <h5 className="font-[600]">Address</h5>
-        <h4 className="text-[#000000a6]">{seller.address}</h4>
+        <h4 className="text-[#000000a6]">{data.address}</h4>
       </div>
       <div className="p-3">
         <h5 className="font-[600]">Phone Number</h5>
-        <h4 className="text-[#000000a6]">{seller.phoneNumber}</h4>
+        <h4 className="text-[#000000a6]">{data.phoneNumber}</h4>
       </div>
       <div className="p-3">
         <h5 className="font-[600]">Total Products</h5>
@@ -60,7 +81,7 @@ const ShopInfo = ({ isOwner, seller }: Props) => {
       </div>
       <div className="p-3">
         <h5 className="font-[600]">Joined On</h5>
-        <h4 className="text-[#000000b0]">{seller?.createdAt?.slice(0, 10)}</h4>
+        <h4 className="text-[#000000b0]">{data?.createdAt?.slice(0, 10)}</h4>
       </div>
       {isOwner && (
         <div className="py-3 px-4">
