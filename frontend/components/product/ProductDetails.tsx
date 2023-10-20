@@ -1,6 +1,8 @@
 'use client'
 
+import { addTocart } from "@/redux/actions/cart"
 import { getAllProductsShop } from "@/redux/actions/product"
+import { addToWishlist, removeFromWishlist } from "@/redux/actions/wishlist"
 import styles from "@/styles/styles"
 import Image from "next/image"
 import Link from "next/link"
@@ -8,6 +10,7 @@ import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 import { AiFillHeart, AiOutlineHeart, AiOutlineMessage, AiOutlineShoppingCart } from "react-icons/ai"
 import { useDispatch, useSelector } from "react-redux"
+import { toast } from "react-toastify"
 
 interface Props {
     data: any
@@ -16,6 +19,8 @@ interface Props {
 const ProductDetails = ({ data }: Props) => {
 
   const { products } = useSelector((state: any) => state.products);
+  const { wishlist } = useSelector((state: any) =>  state.wishlist)
+  const { cart } = useSelector((state: any) => state.cart)
 
    const [count, setCount] = useState(1)
    const [click, setClick] = useState(false)
@@ -25,12 +30,12 @@ const ProductDetails = ({ data }: Props) => {
 
    useEffect(() => {
     dispatch(getAllProductsShop(data && data?.shop._id));
-    // if (wishlist && wishlist.find((i) => i._id === data?._id)) {
-    //   setClick(true);
-    // } else {
-    //   setClick(false);
-    // }
-  }, [data]);
+    if (wishlist && wishlist.find((i: any) => i._id === data?._id)) {
+      setClick(true);
+    } else {
+      setClick(false);
+    }
+  }, [data, wishlist]);
 
    const incrementCount = () => {
     setCount(count + 1);
@@ -41,6 +46,33 @@ const ProductDetails = ({ data }: Props) => {
       setCount(count - 1);
     }
   };
+
+  
+  const addToCartHandler = (id: any) => {
+    const isItemExists = cart && cart.find((i: any) => i._id === id);
+    if (isItemExists) {
+      toast.error("Item already in cart!");
+    } else {
+      if (data.stock < count) {
+        toast.error("Product stock limited!");
+      } else {
+        const cartData = { ...data, qty: count };
+        dispatch(addTocart(cartData));
+        toast.success("Item added to cart successfully!");
+      }
+    }
+  };
+
+  const removeFromWishlistHandler = (data: any) => {
+    setClick(!click)
+    dispatch(removeFromWishlist(data))
+  }
+
+  const addToWishlistHandler = (data: any) => {
+    setClick(!click)
+    dispatch(addToWishlist(data))
+  }
+
 
   const handleMessageSubmit = () => {
     router.push("/inbox?conversation=507hrehrrtertwet")
@@ -57,16 +89,16 @@ const ProductDetails = ({ data }: Props) => {
                  <Image src={`${data && data.images[select]?.url}`} alt="" className="w-[80%] h-[500px] object-cover" width={500} height={500}/>
                 <div className="w-full flex">
                 {data && data.images.map((i: any, index: number) => (
-                      <div className={`${select === 0 ? "border" : "null"} cursor-pointer`}>
+                      <div className={`cursor-pointer`} key={index}>
                         <img
                           src={`${i?.url}`}
                           alt=""
-                          className="h-[100px] overflow-hidden mr-3 mt-3 object-cover"
+                          className={`h-[100px] overflow-hidden mr-3 mt-3 object-cover border `}
                           onClick={() => setSelect(index)}
                         />
                       </div>
                     ))}
-                  <div className={`${select === 1 ? "border" : "null"} cursor-pointer`}></div>
+                 
                   </div>
                   </div>
                 <div className="w-full 800px:w-[50%] pt-5">
@@ -105,7 +137,7 @@ const ProductDetails = ({ data }: Props) => {
                      <AiFillHeart
                        size={30}
                        className="cursor-pointer"
-                    //    onClick={() => removeFromWishlistHandler(data)}
+                       onClick={() => removeFromWishlistHandler(data)}
                        color={click ? "red" : "#333"}
                        title="Remove from wishlist"
                      />
@@ -113,19 +145,21 @@ const ProductDetails = ({ data }: Props) => {
                      <AiOutlineHeart
                        size={30}
                        className="cursor-pointer"
-                    //    onClick={() => addToWishlistHandler(data)}
+                       onClick={() => addToWishlistHandler(data)}
                        title="Add to wishlist"
                      />
                    )}
                  </div>
                  </div>
-                 <div className={`${styles.button} hover:bg-gray-900 transition mt-6 rounded h-11 flex items-center`}>
+                 <div onClick={() => addToCartHandler(data)}
+                  className={`${styles.button} hover:bg-gray-900 transition mt-6 rounded h-11 flex items-center`}>
                   <span className="text-white flex items-center">
                     Add to cart <AiOutlineShoppingCart className="ml-1"/>
                   </span>
                 </div>
                  <div className="flex items-center pt-8">
-                   <img src={data?.shop?.avatar?.url} alt="" className="w-[50px] h-[50px] rounded-full mr-2 object-cover"/>
+                   <img src={data?.shop?.avatar?.url} alt="" onClick={() => router.push(`/shop/preview/${data?.shop._id}`)}
+                    className="w-[50px] h-[50px] rounded-full mr-2 object-cover cursor-pointer"/>
                    <div className="pr-8">
                      <h3 className={`text-sm font-semibold pb-1 pt-1`}>
                        {data.shop.name}

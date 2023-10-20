@@ -1,5 +1,6 @@
 import { server } from "@/utils/server"
 import axios from "axios"
+import { Dispatch } from "redux"
 
 // Load User
 export const loadUser = () => async(dispatch: any) => {
@@ -40,3 +41,38 @@ export const loadSeller = () => async (dispatch: any) => {
     });
   }
 };
+
+// user update information
+export const updateUserInformation: any = (name: string, email: string, phoneNumber: number, password: string) => async (dispatch: Dispatch) => {
+    try {
+      dispatch({
+        type: "updateUserInfoRequest",
+      });
+
+      const { data } = await axios.put(
+        `${server}/user/update-user-info`,
+        {
+          email,
+          password,
+          phoneNumber,
+          name,
+        },
+        {
+          withCredentials: true,
+          headers: {
+            "Access-Control-Allow-Credentials": true,
+          },
+        }
+      );
+
+      dispatch({
+        type: "updateUserInfoSuccess",
+        payload: data.user,
+      });
+    } catch (error: any) {
+      dispatch({
+        type: "updateUserInfoFailed",
+        payload: error.response.data.message,
+      });
+    }
+  };

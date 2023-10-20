@@ -41,13 +41,13 @@ const CountDown = ({data}: Props) => {
     return timeLeft;
   }
 
-  const timerComponents = Object.keys(timeLeft).map((interval) => {
+  const timerComponents = Object.keys(timeLeft).map((interval, i) => {
     if (!timeLeft[interval]) {
       return null;
     }
 
     return (
-      <span className="text-sm text-black">
+      <span className="text-sm text-black" key={i}>
         {timeLeft[interval]} {interval}{" "}
       </span>
     );
@@ -58,7 +58,7 @@ const CountDown = ({data}: Props) => {
       {timerComponents.length ? (
         timerComponents
       ) : (
-        <span className="text-[red] text-sm">Time's Up</span>
+        <span className="text-[red] text-sm">Time&apos;s Up</span>
       )}
     </div>
   );

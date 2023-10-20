@@ -31,6 +31,8 @@ const Header = ({ activeHeading }: Props) => {
   const { isAuthenticated, user } = useSelector((state: any) => state.user);
   const { seller } = useSelector((state: any) => state.seller)
   const { allProducts } = useSelector((state: any) => state.products)
+  const { cart } = useSelector((state: any) => state.cart)
+  const { wishlist } = useSelector((state: any) =>  state.wishlist)
 
   const [dropDown, setDropDown] = useState(false);
   const [active, setActive] = useState(false)
@@ -111,7 +113,7 @@ const Header = ({ activeHeading }: Props) => {
                    const Product_name = d.replace(/\s+/g, "-")
 
                     return (
-                      <Link href={`/product/${Product_name}`} key={index}>
+                      <Link href={`/product/${i._id}`} key={index}>
                         <div className="w-full flex items-start-py-3 mt-2">
                           <Image src={`${i.images[0]?.url}`} alt="" width={40} height={40}
                           className="w-[40px] h-[40px] mr-[10px] object-cover"/>
@@ -151,14 +153,14 @@ const Header = ({ activeHeading }: Props) => {
             <div className="relative cursor-pointer" onClick={() => setOpenWishlist(true)}>
               <AiOutlineHeart size={25}/>
               <span className="absolute right-0 top-0 rounded-full bg-[#3bc177] w-4 h-4 p-0 m-0 text-white text-[12px] leading-tight text-center">
-                0
+                {wishlist && wishlist.length}
               </span>
             </div>
 
             <div className="relative cursor-pointer" onClick={() => setOpenCart(true)}>
               <AiOutlineShoppingCart size={25}/>
               <span className="absolute right-0 top-0 rounded-full bg-[#3bc177] w-4 h-4 p-0 m-0 text-white text-[12px] leading-tight text-center">
-                1
+                {cart && cart.length}
               </span>
             </div>
 
@@ -216,7 +218,7 @@ const Header = ({ activeHeading }: Props) => {
             >
               <AiOutlineShoppingCart size={30} />
               <span className="absolute right-0 top-0 rounded-full bg-[#3bc177] w-4 h-4 top right p-0 m-0 text-white font-mono text-[12px]  leading-tight text-center">
-                1
+                {cart && cart.length}
               </span>
             </div>
           </div>
@@ -241,7 +243,7 @@ const Header = ({ activeHeading }: Props) => {
                   >
                     <AiOutlineHeart size={30} className="mt-5 ml-3" />
                     <span className="absolute right-0 top-0 rounded-full bg-[#3bc177] w-4 h-4 top right p-0 m-0 text-white font-mono text-[12px]  leading-tight text-center">
-                      3
+                      {wishlist && wishlist.length}
                     </span>
                   </div>
                 </div>

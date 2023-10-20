@@ -31,9 +31,6 @@ const ProductPage = ({ params }: { params: { productId: string }}) => {
     }
   }, [allProducts, allEvents]);
 
-  console.log(data)
-
-
   return (
     <div>
       <Header/>
