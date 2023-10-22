@@ -155,7 +155,7 @@ module.exports = {
     }
   })),
 
-  //--------------------------------------------//Logout//----------------------------------------------//
+  //-------------------------------------------------//Logout//--------------------------------------------------//
   logout: (catchAsyncErrors(async(req, res, next) => {
     try {
       res.cookie("token", null, {
@@ -171,5 +171,152 @@ module.exports = {
     } catch (error) {
       return next(new ErrorHandler(error.message, 500));
     }
-  }))
+  })),
+
+  //-------------------------------------------//Update User Info//---------------------------------------------//
+  updateUser: catchAsyncErrors(async(req, res, next) => {
+    try {
+      const { email, phoneNumber, name } = req.body
+
+      const userId  = req.user?._id
+
+      const user = await User.findById(userId)
+
+      if (!user) {
+        return next(new ErrorHandler("User not found", 400));
+      }
+
+
+      user.name = name;
+      user.email = email;
+      user.phoneNumber = phoneNumber;
+
+      await user?.save();
+
+      res.status(201).json({
+        success: true,
+        user,
+      });
+    } catch (error) {
+      return next(new ErrorHandler(error.message, 500));
+    }
+  }),
+
+  
+  //-------------------------------------------//Update User Avatar//---------------------------------------------//
+  updateAvatar: catchAsyncErrors(async(req, res, next) => {
+    try {
+      const { avatar } = req.body
+
+      const userId = req.user?._id
+      const user = await User.findById(userId)
+
+      if(avatar && user) {
+        if(user?.avatar?.public_id) {
+          await cloudinary.v2.uploader.destroy(user?.avatar?.public_id)
+          const myCloud = await cloudinary.v2.uploader.upload(avatar, { folder: "AndromedaAv", width: 150 })
+
+          user.avatar = {
+            public_id: myCloud.public_id,
+            url: myCloud.secure_url
+          }
+        } else {
+          const myCloud = await cloudinary.v2.uploader.upload(avatar, { folder: "AndromedaAv", width: 150 })
+          user.avatar = {
+            public_id: myCloud.public_id,
+            url: myCloud.secure_url
+          }
+        }
+      }
+
+      await user?.save()
+
+      res.status(201).json({
+        success: true,
+        user
+      })
+    } catch (error) {
+      return next(new ErrorHandler(error.message, 500));
+    }
+  }),
+
+//------------------------------------------//Update User Addresses//-------------------------------------------//
+updateUserAddresses: catchAsyncErrors(async(req, res, next) => {
+  try {
+    const userId = req.user?._id
+    const user = await User.findById(userId)
+
+    const sameTypeAddress = user.addresses.find((address) => address.addressType === req.body.addressType)
+    if(sameTypeAddress) {
+      return next(new ErrorHandler(`${req.body.addressType} address already exists`, 400))
+    }
+
+    const existAddress = user.addresses.find(address => address._id === req.body._id)
+
+    if(existAddress) {
+      Object.assign(existAddress, req.body)
+    } else {
+      // Add The New Address To The Array
+      user.addresses.push(req.body)
+    }
+
+    await user?.save()
+
+    res.status(201).json({
+      success: true,
+      user
+    })
+  } catch (error) {
+    return next(new ErrorHandler(error.message, 500));
+  }
+}),
+
+//------------------------------------------//Delete User Addresses//-------------------------------------------//
+deleteUserAddress: catchAsyncErrors(async(req, res, next) => {
+  try {
+    const userId = req.user?._id
+    const addressId = req.params.id
+
+    await User.updateOne(
+      {
+        _id: userId,
+      },
+      { $pull: { addresses: { _id: addressId } } }
+    );
+
+    const user = await User.findById(userId);
+
+    res.status(200).json({ success: true, user });
+  } catch (error) {
+    return next(new ErrorHandler(error.message, 500));
+  }
+}),
+
+//------------------------------------------//Update User Password//-------------------------------------------//
+updatePassword: catchAsyncErrors(async(req, res, next) => {
+  try {
+    const user = await User.findById(req.user?._id).select("+password")
+
+    const isPasswordMatched = await user.comparePassword(req.body.oldPassword)
+
+    if(!isPasswordMatched) {
+      return next(new ErrorHandler("Old password is incorrect", 400));
+    }
+
+    if(req.body.newPassword !== req.body.confirmPassword) {
+      return next(new ErrorHandler("Passwords do not match", 400));
+    }
+
+    user.password = req.body.newPassword
+
+    await user.save()
+
+    res.status(201).json({
+      success: true,
+      message: "Password updated succesfully"
+    })
+  } catch (error) {
+    return next(new ErrorHandler(error.message, 500));
+  }
+})
 }

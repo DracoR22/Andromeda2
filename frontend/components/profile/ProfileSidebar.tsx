@@ -132,25 +132,11 @@ const ProfileSidebar = ({ active, setActive }: Props) => {
       </span>
     </div>
 
-    <div
-      className="flex items-center cursor-pointer w-full mb-8 hover:text-[red] transition"
-      onClick={() => setActive(8)}
-    >
-      <TbCreditCard size={20} color={active === 8 ? "red" : ""} />
-      <span
-        className={`pl-3 ${
-          active === 8 ? "text-[red]" : ""
-        } 800px:block hidden`}
-      >
-        Payment Methods
-      </span>
-    </div>
-
     {user && user?.role === "Admin" && (
       <Link href="/admin/dashboard">
         <div
           className="flex items-center cursor-pointer w-full mb-8 hover:text-[red] transition"
-          onClick={() => setActive(9)}
+          onClick={() => setActive(8)}
         >
           <MdOutlineAdminPanelSettings
             size={20}

@@ -1,6 +1,6 @@
 import { createReducer } from "@reduxjs/toolkit";
 
-const wishlistItems = localStorage.getItem("wishlistItems");
+const wishlistItems = typeof window !== 'undefined' && localStorage.getItem("wishlistItems") 
 
 const initialState = {
   wishlist: wishlistItems && wishlistItems !== 'null' // Check for 'null' string

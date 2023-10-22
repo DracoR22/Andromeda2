@@ -1,6 +1,6 @@
 import { createReducer } from "@reduxjs/toolkit";
 
-const cartItems = localStorage.getItem("cartItems");
+const cartItems = typeof window !== 'undefined' && localStorage.getItem("cartItems") 
 
 const initialState = {
   cart: cartItems && cartItems !== 'null' // Check for 'null' string

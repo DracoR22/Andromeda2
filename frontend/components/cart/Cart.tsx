@@ -87,10 +87,10 @@ const firstFourNumbers = parseInt(totalPriceAsString, 10);
               {/* checkout buttons */}
               <Link href="/checkout">
                 <div
-                  className={`h-[45px] flex items-center justify-center w-[100%] bg-[#e44343] rounded-[5px]`}
+                  className={`h-[45px] flex items-center justify-center w-[100%] bg-[#e44343] hover:bg-[#bd4b4b] transition rounded-[5px]`}
                 >
-                  <h1 className="text-[#fff] text-[18px] font-[600]">
-                    Checkout Now (USD${firstFourNumbers})
+                  <h1 className="text-[#fff] text-sm font-[600]">
+                    Checkout (USD${firstFourNumbers})
                   </h1>
                 </div>
               </Link>

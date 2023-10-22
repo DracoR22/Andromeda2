@@ -35,5 +35,36 @@ getShopCoupons: catchAsyncErrors(async(req, res, next) => {
     } catch (error) {
         return next(new ErrorHandler(error.message, 500));
     }
+}),
+
+//------------------------------------------//Get Coupon By Name//--------------------------------------------//
+getCouponValue: catchAsyncErrors(async(req, res, next) => {
+    try {
+        const couponCode = await CouponCode.findOne({ name: req.params.name })
+
+        res.status(201).json({
+            success: true,
+            couponCode
+        })
+    } catch (error) {
+        return next(new ErrorHandler(error.message, 500));
+    }
+}),
+
+//------------------------------------------//Delete Coupon Code//--------------------------------------------//
+deleteCouponCode: catchAsyncErrors(async(req, res, next) => {
+    try {
+        const couponCode = await CouponCode.findByIdAndDelete(req.params.id);
+
+        if (!couponCode) {
+          return next(new ErrorHandler("Coupon code dosen't exists!", 400));
+        }
+        res.status(201).json({
+          success: true,
+          message: "Coupon code deleted successfully!",
+        });
+    } catch (error) {
+        return next(new ErrorHandler(error.message, 500));
+    }
 })
 }

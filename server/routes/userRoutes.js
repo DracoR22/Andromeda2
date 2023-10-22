@@ -9,5 +9,10 @@ router.post('/login-user', userController.loginUser)
 router.get('/get-user', isAuthenticated, userController.getUser)
 router.post('/social-auth', userController.socialAuth)
 router.get('/logout', isAuthenticated, userController.logout)
+router.put('/update-user-info', isAuthenticated, userController.updateUser)
+router.put('/update-avatar', isAuthenticated, userController.updateAvatar)
+router.put('/update-user-addresses', isAuthenticated, userController.updateUserAddresses)
+router.delete('/delete-user-address/:id', isAuthenticated, userController.deleteUserAddress)
+router.put('/update-user-password', isAuthenticated, userController.updatePassword)
 
 module.exports = router

@@ -167,7 +167,7 @@ const Header = ({ activeHeading }: Props) => {
             <div className="relative cursor-pointer">
               {user ? (
                 <Link href="/profile">
-                  <Image src={user.avatar?.url || "/profile.jpg"} alt="" width={40} height={40} className="rounded-full object-cover"/>
+                  <Image src={user.avatar?.url || "/profile.jpg"} alt="" width={40} height={40} className="rounded-full object-cover w-[40px] h-[40px]"/>
                 </Link>
               ) : (
                 <Link href="/login">

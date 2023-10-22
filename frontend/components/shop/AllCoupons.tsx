@@ -40,7 +40,11 @@ const AllCoupons = () => {
   }, [dispatch]);
 
 
-  const handleDelete = (id: any) => {}
+  const handleDelete = async (id: any) => {
+    await axios.delete(`${server}/coupon/delete-coupon/${id}`, { withCredentials: true })
+    window.location.reload();
+    toast.success("Coupon code created!")
+  }
 
   const handleSubmit = async (e: any) => {
     e.preventDefault()
