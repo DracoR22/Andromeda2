@@ -21,6 +21,7 @@ import { BiMenuAltLeft } from "react-icons/bi"
 import { BsPencil, BsPersonGear } from "react-icons/bs"
 import { useRouter } from "next/navigation"
 import useLoginModal from "@/hooks/UseLoginModal"
+import ClientOnly from "../ClientOnly"
 
 interface Props {
   activeHeading?: number
@@ -139,6 +140,7 @@ const Header = ({ activeHeading }: Props) => {
             <NavItems active={activeHeading}/>
           </div>
           {/* ICONS */}
+          <ClientOnly>
           <div className="flex items-center gap-2">
           {seller ? (
             <div className="relative cursor-pointer" onClick={() => router.push("/dashboard")}>
@@ -176,6 +178,7 @@ const Header = ({ activeHeading }: Props) => {
               )}
             </div>
           </div>
+          </ClientOnly>
            {/* CART */}
            {openCart && (
             <Cart setOpenCart={setOpenCart}/>
@@ -327,6 +330,7 @@ const Header = ({ activeHeading }: Props) => {
           </div>
         )}
       </div>
+    
    </>
   )
 }

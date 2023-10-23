@@ -12,7 +12,7 @@ import Heading from "@/utils/Heading"
 const ProfilePage = () => {
 
   const [active, setActive] = useState(1)
-  const { user } = useSelector((state: any) => state.user);
+  const { user, isLoading } = useSelector((state: any) => state.user);
 
   if(!user) {
     redirect("/")

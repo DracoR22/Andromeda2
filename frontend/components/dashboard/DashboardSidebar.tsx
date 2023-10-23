@@ -29,7 +29,7 @@ const DashboardSidebar = ({ active }: Props) => {
     </div>
 
     <div className="w-full flex items-center p-4 ">
-      <Link href="/dashboard-orders" className="w-full flex items-center ">
+      <Link href="/dashboard/orders" className="w-full flex items-center ">
       
         <h5 className={`hidden 800px:flex items-center gap-2 pl-2 text-[18px] font-[400] hover:text-[#3bc177] transition
          ${active === 2 ? "text-[#3bc177]" : "text-black" }`}>

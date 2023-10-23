@@ -26,18 +26,11 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
 
-  const [stripeApiKey, setStripeApiKey] = useState("")
-  async function getStripeApiKey() {
-    const { data } = await axios.get(`${server}/payment/stripeapikey`)
-    setStripeApiKey(data.stripeApiKey)
-  }
-
   useEffect(() => {
     store.dispatch(loadUser())
     store.dispatch(loadSeller())
     store.dispatch(getAllProducts());
     store.dispatch(getAllEvents());
-    getStripeApiKey()
   }, [])
 
   return (

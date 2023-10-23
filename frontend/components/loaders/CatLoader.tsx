@@ -1,3 +1,5 @@
+'use client'
+
 import animation from "@/public/cat_loader.json"
 import Lottie from "lottie-react";
 

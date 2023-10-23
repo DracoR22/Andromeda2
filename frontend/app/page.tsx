@@ -1,5 +1,8 @@
+'use client'
+
 import BestDeals from "@/components/BestDeals"
 import Categories from "@/components/Categories"
+import ClientOnly from "@/components/ClientOnly"
 import Events from "@/components/Events"
 import Footer from "@/components/Footer"
 import Hero from "@/components/hero/Hero"

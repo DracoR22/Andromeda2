@@ -4,6 +4,10 @@ import styles from "@/styles/styles"
 import Image from "next/image"
 import CountDown from "./CountDown"
 import Link from "next/link"
+import { useDispatch, useSelector } from "react-redux"
+import { toast } from "react-toastify"
+import { addTocart } from "@/redux/actions/cart"
+import ClientOnly from "./ClientOnly"
 
 interface Props {
   active?: boolean
@@ -12,7 +16,23 @@ interface Props {
 
 const EventCard = ({ data, active }: Props) => {
 
- const addToCartHandler = (data: any) => {}
+  const { cart } = useSelector((state: any) => state.cart);
+  const dispatch = useDispatch();
+
+  const addToCartHandler = (data: any) => {
+    const isItemExists = cart && cart.find((i: any) => i._id === data._id);
+    if (isItemExists) {
+      toast.error("Item already in cart!");
+    } else {
+      if (data.stock < 1) {
+        toast.error("Product stock limited!");
+      } else {
+        const cartData = { ...data, qty: 1 };
+        dispatch(addTocart(cartData));
+        toast.success("Item added to cart successfully!");
+      }
+    }
+  }
 
   return (
     <div className={`w-full block bg-white rounded-lg ${active ? "unset" : "mb-12"} lg:flex p-2`}>
@@ -43,9 +63,9 @@ const EventCard = ({ data, active }: Props) => {
         <br />
         <div className="flex items-center">
           <Link href={`/product/${data._id}?isEvent=true`}>
-            <div className={`rounded-full bg-black p-2 px-6 border border-[#BFA181] text-[#fff] hover:bg-gray-900 transition`}>See Details</div>
+            <div className={`rounded-full bg-black p-2 px-6 border border-[#BFA181] text-[#fff] cursor-pointer hover:bg-gray-900 transition`}>See Details</div>
           </Link>
-          <div className={`rounded-full bg-black p-2 px-6 border border-[#BFA181] text-[#fff] ml-5 hover:bg-gray-900 transition`} onClick={() => addToCartHandler(data)}>Add to cart</div>
+          <div className={`rounded-full bg-black p-2 px-6 border border-[#BFA181] text-[#fff] cursor-pointer ml-5 hover:bg-gray-900 transition`} onClick={() => addToCartHandler(data)}>Add to cart</div>
         </div>
       </div>
     </div>

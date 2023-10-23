@@ -13,6 +13,7 @@ import { server } from "@/utils/server";
 import Image from "next/image";
 import { RxCross1 } from "react-icons/rx";
 import { Country, State } from "country-state-city"
+import { getAllOrdersOfUser } from "@/redux/actions/order";
 
 interface Props {
     active: any
@@ -197,25 +198,12 @@ const ProfileContent = ({ active }: Props) => {
 
 const AllOrders = () => {
     const { user } = useSelector((state: any) => state.user);
-    // const { orders } = useSelector((state) => state.order);
+    const { orders } = useSelector((state: any) => state.order);
     const dispatch = useDispatch();
-
-    const orders = [
-        {
-            _id: "32434234oeortekt43ktl343",
-            orderItems: [
-                {
-                    name: "Sapoooo"
-                }
-            ],
-            totalPrice: 120,
-            orderStatus: "Processing"
-        }
-    ]
   
-    // useEffect(() => {
-    //   dispatch(getAllOrdersOfUser(user._id));
-    // }, []);
+    useEffect(() => {
+      dispatch(getAllOrdersOfUser(user._id));
+    }, []);
   
     const columns = [
       { field: "id", headerName: "Order ID", minWidth: 150, flex: 0.7 },
@@ -269,21 +257,21 @@ const AllOrders = () => {
   
     const row: any = [];
   
-    orders && orders.forEach((item) => {
+    orders && orders.forEach((item: any) => {
         row.push({
           id: item._id,
-          itemsQty: item.orderItems.length,
+          itemsQty: item.cart.length,
           total: "US$ " + item.totalPrice,
-          status: item.orderStatus,
+          status: item.status,
         });
       });
   
     return (
-      <div className="pl-8 pt-1">
+      <div className="px-8 pt-1 ">
         <DataGrid
           rows={row}
           columns={columns}
-          autoHeight
+          autoHeight className="bg-white"
         />
       </div>
     );
