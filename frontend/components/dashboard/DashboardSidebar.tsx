@@ -18,7 +18,7 @@ const DashboardSidebar = ({ active }: Props) => {
   return (
     <div className="w-full h-[90vh] bg-white shadow-sm overflow-y-scroll sticky top-0 left-0 z-10">
     {/* single item */}
-    <div className="w-full flex items-center p-4">
+    <div className="w-full flex items-center mt-2 p-4">
       <Link href="/dashboard" className="w-full flex items-center ">
         <h5 className={`hidden 800px:flex items-center gap-2  pl-2 text-[18px] font-[400] hover:text-[#3bc177] transition
          ${ active === 1 ? "text-[#3bc177]" : "text-black"}`}>
@@ -82,7 +82,7 @@ const DashboardSidebar = ({ active }: Props) => {
     </div>
 
     <div className="w-full flex items-center p-4">
-      <Link href="/dashboard-withdraw-money" className="w-full flex items-center">
+      <Link href="/dashboard/withdraw" className="w-full flex items-center">
         <h5 className={`hidden 800px:flex items-center gap-2 pl-2 text-[18px] font-[400] hover:text-[#3bc177] transition
          ${active === 7 ? "text-[#3bc177]" : "text-black"}`}>
            <CiMoneyBill size={30}/>
@@ -92,7 +92,7 @@ const DashboardSidebar = ({ active }: Props) => {
     </div>
 
     <div className="w-full flex items-center p-4">
-      <Link href="/dashboard-messages" className="w-full flex items-center">
+      <Link href="/dashboard/messages" className="w-full flex items-center">
         <h5 className={`hidden 800px:flex items-center gap-2 pl-2 text-[18px] font-[400] hover:text-[#3bc177] transition
          ${active === 8 ? "text-[#3bc177]" : "text-black"}`}>
               <BiMessageSquareDetail size={30} />
@@ -112,7 +112,7 @@ const DashboardSidebar = ({ active }: Props) => {
     </div>
 
     <div className="w-full flex items-center p-4">
-      <Link href="/dashboard-refunds" className="w-full flex items-center">
+      <Link href="/dashboard/refunds" className="w-full flex items-center">
         <h5 className={`hidden 800px:flex items-center gap-2 pl-2 text-[18px] font-[400] hover:text-[#3bc177] transition
         ${active === 10 ? "text-[#3bc177]" : "text-black"}`}>
            <HiOutlineReceiptRefund size={30}/>

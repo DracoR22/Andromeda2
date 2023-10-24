@@ -22,7 +22,7 @@ export const loadUser: any = () => async(dispatch: any) => {
 }
 
 // load Seller
-export const loadSeller = () => async (dispatch: any) => {
+export const loadSeller: any = () => async (dispatch: any) => {
   try {
     dispatch({
       type: "LoadSellerRequest",

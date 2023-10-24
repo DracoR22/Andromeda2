@@ -27,6 +27,6 @@ module.exports = {
 
 //-----------------------------------------//Send Stripe Publishable Key//----------------------------------------//
 publishableKey: catchAsyncErrors(async(req, res, next) => {
-   res.status(201).json({ stripeApiKey: process.env.STRIPE_API_KEY })
+   res.status(201).json({ stripeApikey: process.env.STRIPE_API_KEY })
 })
 }

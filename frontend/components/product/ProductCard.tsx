@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { removeFromWishlist, addToWishlist } from "@/redux/actions/wishlist"
 import { toast } from "react-toastify";
 import { addTocart } from "@/redux/actions/cart";
+import Ratings from "./Ratings";
 
 interface Props {
     data: any
@@ -81,11 +82,7 @@ const ProductCard = ({ data, isShop, isEvent }: Props) => {
         {data.name.length > 40 ? data.name.slice(0, 40) + "..." : data.name}
         </h4>
         <div className="flex">
-          <AiFillStar className="mr-2 cursor-pointer text-[#F6BA00]"/>
-          <AiFillStar className="mr-2 cursor-pointer text-[#F6BA00]"/>
-          <AiFillStar className="mr-2 cursor-pointer text-[#F6BA00]"/>
-          <AiFillStar className="mr-2 cursor-pointer text-[#F6BA00]"/>
-          <AiFillStar className="mr-2 cursor-pointer text-[#F6BA00]"/>
+        <Ratings rating={data.ratings}/>
         </div>
         
         <div className="py-2 flex items-center justify-between">

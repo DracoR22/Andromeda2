@@ -31,23 +31,23 @@ const DashboardHeader = ({ seller }: Props) => {
             className="mx-5 cursor-pointer hover:text-[#3bc177] transition"
           />
         </Link>
-        <Link href="/dashboard-events" className="800px:block hidden">
+        <Link href="/dashboard/events" className="800px:block hidden">
           <MdOutlineLocalOffer
           
             size={25}
             className="mx-5 cursor-pointer hover:text-[#3bc177] transition"
           />
         </Link>
-        <Link href="/dashboard-products" className="800px:block hidden">
+        <Link href="/dashboard/products" className="800px:block hidden">
           <FiShoppingBag
             size={25}
             className="mx-5 cursor-pointer hover:text-[#3bc177] transition"
           />
         </Link>
-        <Link href="/dashboard-orders" className="800px:block hidden">
+        <Link href="/dashboard/orders" className="800px:block hidden">
           <FiPackage size={25} className="mx-5 cursor-pointer hover:text-[#3bc177] transition" />
         </Link>
-        <Link href="/dashboard-messages" className="800px:block hidden">
+        <Link href="/dashboard/messages" className="800px:block hidden">
           <BiMessageSquareDetail
             size={25}
             className="mx-5 cursor-pointer hover:text-[#3bc177] transition"

@@ -12,6 +12,7 @@ import { RxCross1 } from "react-icons/rx";
 import { AiFillStar, AiOutlineStar } from "react-icons/ai";
 import Link from "next/link"
 import Image from "next/image"
+import Button from "../ui/Button";
 
 interface UserOrderDetailsProps {
     id: string
@@ -27,6 +28,8 @@ const UserOrderDetails = ({ id }: UserOrderDetailsProps) => {
   const [selectedItem, setSelectedItem] = useState<any>(null);
   const [rating, setRating] = useState<any>(1);
 
+  const [commentLoading, setCommentLoading] = useState(false)
+
   useEffect(() => {
     dispatch(getAllOrdersOfUser(user._id));
   }, [dispatch,user._id]);
@@ -34,6 +37,7 @@ const UserOrderDetails = ({ id }: UserOrderDetailsProps) => {
   const data = orders && orders.find((item: any) => item._id === id);
 
   const reviewHandler = async (e: any) => {
+    setCommentLoading(true)
     await axios.put(`${server}/product/create-new-review`, {
           user,
           rating,
@@ -49,6 +53,7 @@ const UserOrderDetails = ({ id }: UserOrderDetailsProps) => {
         setComment("");
         setRating(null);
         setOpen(false);
+        setCommentLoading(true)
       })
       .catch((error) => {
         toast.error(error);
@@ -102,10 +107,9 @@ const UserOrderDetails = ({ id }: UserOrderDetailsProps) => {
               </h5>
             </div>
             {!item.isReviewed && data?.status === "Delivered" ?  <div
-                className={`${styles.button} text-[#fff]`}
+                className={`${styles.button} rounded-full hover:bg-gray-900 text-[#fff]`}
                 // @ts-ignore
-                onClick={() => setOpen(true) || setSelectedItem(item)}
-              >
+                onClick={() => setOpen(true) || setSelectedItem(item)}>
                 Write a review
               </div> : (
              null
@@ -125,19 +129,19 @@ const UserOrderDetails = ({ id }: UserOrderDetailsProps) => {
                 className="cursor-pointer"
               />
             </div>
-            <h2 className="text-[30px] font-[500] text-center">
+            <h2 className="text-[30px] font-semibold text-center">
               Give a Review
             </h2>
             <br />
             <div className="w-full flex">
-              <img
+              <Image
                 src={`${selectedItem?.images[0]?.url}`}
                 alt=""
-                className="w-[80px] h-[80px]"
+                className="w-[80px] h-[80px] object-cover" width={100} height={100}
               />
               <div>
-                <div className="pl-3 text-[20px]">{selectedItem?.name}</div>
-                <h4 className="pl-3 text-[20px]">
+                <div className="pl-3 font-semibold">{selectedItem?.name}</div>
+                <h4 className="pl-3 text-sm text-neutral-600 mt-2">
                   US${selectedItem?.discountPrice} x {selectedItem?.qty}
                 </h4>
               </div>
@@ -187,12 +191,13 @@ const UserOrderDetails = ({ id }: UserOrderDetailsProps) => {
                 className="mt-2 w-[95%] border p-2 outline-none"
               ></textarea>
             </div>
-            <div className={`${styles.button} text-white text-[20px] ml-3`}
+            <Button isLoading={commentLoading}
+            className={`bg-black p-2 px-4 rounded-full hover:bg-gray-900 transition text-white  ml-3`}
             // @ts-ignore
             onClick={rating > 1 ? reviewHandler : null}
             >
               Submit
-            </div>
+            </Button>
           </div>
         </div>
       )}
@@ -225,16 +230,16 @@ const UserOrderDetails = ({ id }: UserOrderDetailsProps) => {
           <br />
            {
             data?.status === "Delivered" && (
-              <div className={`${styles.button} text-white`}
-              onClick={refundHandler}
-              >Give a Refund</div>
+              <div className={`${styles.button} rounded-full hover:bg-gray-900 transition text-white`} onClick={refundHandler}>
+                Request Refund
+              </div>
             )
            }
         </div>
       </div>
       <br />
       <Link href="/">
-        <div className={`${styles.button} hover:bg-gray-900 transition text-white`}>Send Message</div>
+        <div className={`${styles.button} rounded-full hover:bg-gray-900 transition text-white`}>Send Message</div>
       </Link>
       <br />
       <br />

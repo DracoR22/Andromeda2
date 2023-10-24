@@ -11,6 +11,7 @@ import { useEffect, useState } from "react"
 import { AiFillHeart, AiOutlineHeart, AiOutlineMessage, AiOutlineShoppingCart } from "react-icons/ai"
 import { useDispatch, useSelector } from "react-redux"
 import { toast } from "react-toastify"
+import Ratings from "./Ratings"
 
 interface Props {
     data: any
@@ -72,6 +73,14 @@ const ProductDetails = ({ data }: Props) => {
     setClick(!click)
     dispatch(addToWishlist(data))
   }
+   
+  const totalReviewsLength = products && products.reduce((acc: number, product: any) => acc + product.reviews.length, 0);
+
+  const totalRatings = products && products.reduce((acc: number, product: any) => acc + product.reviews.reduce((sum: number, review: any) => sum + review.rating, 0), 0);
+
+  const avg =  totalRatings / totalReviewsLength || 0;
+
+  const averageRating = avg.toFixed(2);
 
 
   const handleMessageSubmit = () => {
@@ -161,11 +170,11 @@ const ProductDetails = ({ data }: Props) => {
                    <img src={data?.shop?.avatar?.url} alt="" onClick={() => router.push(`/shop/preview/${data?.shop._id}`)}
                     className="w-[50px] h-[50px] rounded-full mr-2 object-cover cursor-pointer"/>
                    <div className="pr-8">
-                     <h3 className={`text-sm font-semibold pb-1 pt-1`}>
+                     <h3 className={`text-sm font-semibold pb-1 pt-1 cursor-pointer`} onClick={() => router.push(`/shop/preview/${data?.shop._id}`)}>
                        {data.shop.name}
                      </h3>
                      <h5 className="pb-3 text-sm text-neutral-600">
-                       Ratings
+                       ({averageRating}/5) Ratings
                      </h5>
                    </div>
                    <div className={`bg-black flex items-center cursor-pointer hover:bg-gray-900 transition mt-4 rounded h-11 px-3`} onClick={handleMessageSubmit}>
@@ -177,7 +186,7 @@ const ProductDetails = ({ data }: Props) => {
                 </div>
               </div>
             </div>
-            <ProductDetailsInfo data={data} products={products}/>
+            <ProductDetailsInfo data={data} products={products} averageRating={averageRating} totalReviewsLength={totalReviewsLength}/>
           </div>
         </>
        )}
@@ -188,9 +197,11 @@ const ProductDetails = ({ data }: Props) => {
 interface ProductDetailsInfoProps {
   data: any
   products: any
+  averageRating: any
+  totalReviewsLength: any
 }
 
-const ProductDetailsInfo = ({ data, products }: ProductDetailsInfoProps) => {
+const ProductDetailsInfo = ({ data, products, averageRating, totalReviewsLength }: ProductDetailsInfoProps) => {
   const [active, setActive] = useState(1);
 
   return (
@@ -248,7 +259,7 @@ const ProductDetailsInfo = ({ data, products }: ProductDetailsInfoProps) => {
                 <div className="pl-2 ">
                   <div className="w-full flex items-center">
                     <h1 className="font-[500] mr-3">{item.user.name}</h1>
-                    {/* <Ratings rating={data?.ratings} /> */} item rating
+                    <Ratings rating={data?.ratings} /> 
                   </div>
                   <p>{item.comment}</p>
                 </div>
@@ -275,8 +286,8 @@ const ProductDetailsInfo = ({ data, products }: ProductDetailsInfoProps) => {
                 />
                 <div className="pl-3">
                   <h3 className='text-sm font-semibold'>{data.shop.name}</h3>
-                  <h5 className="pb-2 text-[15px]">
-                    {/* ({averageRating}/5) Ratings */}
+                  <h5 className="pb-2 text-sm text-gray-600">
+                    ({averageRating}/5) Ratings
                   </h5>
                 </div>
               </div>
@@ -299,7 +310,7 @@ const ProductDetailsInfo = ({ data, products }: ProductDetailsInfoProps) => {
               </h5>
               <h5 className="font-[600] pt-3">
                 Total Reviews:{" "}
-                {/* <span className="text-sm text-neutral-600">{totalReviewsLength}</span> */}
+                <span className="text-sm text-neutral-600">{totalReviewsLength}</span>
               </h5>
               <Link href={`/shop/preview/${data.shop._id}`}>
                 <div

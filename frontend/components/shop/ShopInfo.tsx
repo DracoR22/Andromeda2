@@ -49,17 +49,25 @@ const ShopInfo = ({ isOwner, seller, id }: Props) => {
         
       };
 
+      
+  const totalReviewsLength = products && products.reduce((acc: number, product: any) => acc + product.reviews.length, 0);
+
+  const totalRatings = products && products.reduce((acc: number, product: any) => acc + product.reviews.reduce((sum: number, review: any) => sum + review.rating, 0),0);
+
+  const averageRating = totalRatings / totalReviewsLength || 0;
+
+
   return (
     <>
         <div className="w-full py-5">
         <div className="w-full flex item-center justify-center">
-          <Image src={data.avatar?.url || ''} alt="" width={150} height={150}
+          <img src={data.avatar?.url || ''} alt="" 
           className="w-[150px] h-[150px] object-cover rounded-full"/>
         </div>
-        <h3 className="text-center py-2 text-[20px]">
+        <h3 className="text-center py-2 text-[20px] font-semibold">
             {data.name}
         </h3>
-        <p className="text-[16px] text-[#000000a6] p-[10px] flex items-center">
+        <p className=" text-[#000000a6] p-[10px] flex items-center px-2">
             {data.description}
         </p>
       </div>
@@ -77,7 +85,7 @@ const ShopInfo = ({ isOwner, seller, id }: Props) => {
       </div>
       <div className="p-3">
         <h5 className="font-[600]">Shop Ratings</h5>
-        {/* <h4 className="text-[#000000b0]">{averageRating}/5</h4> */}
+        <h4 className="text-[#000000b0]">{averageRating}/5</h4>
       </div>
       <div className="p-3">
         <h5 className="font-[600]">Joined On</h5>

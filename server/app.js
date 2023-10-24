@@ -9,6 +9,7 @@ const productRoutes = require("./routes/productRoutes")
 const eventRoutes = require("./routes/eventRoutes")
 const couponCodeRoutes = require("./routes/couponCodeRoutes")
 const paymentRoutes = require("./routes/paymentRoutes")
+const orderRoutes = require("./routes/orderRoutes")
 
 const app = express()
 
@@ -31,6 +32,7 @@ app.use("/api/v2/product", productRoutes)
 app.use("/api/v2/event", eventRoutes)
 app.use("/api/v2/coupon", couponCodeRoutes)
 app.use("/api/v2/payment", paymentRoutes)
+app.use("/api/v2/order", orderRoutes)
 
 // Middleware Calls
 app.use(ErrorHandler)

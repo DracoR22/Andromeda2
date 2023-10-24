@@ -10,5 +10,7 @@ router.post('/login-shop', shopController.loginShop)
 router.get('/get-seller', isSeller, shopController.getShop)
 router.get('/logout', shopController.LogoutShop)
 router.get('/get-shop-info/:id', shopController.getShopInfo)
+router.put('/update-shop-avatar', isSeller, shopController.updateShopAvatar)
+router.put('/update-seller-info', isSeller, shopController.updateShopInfo)
 
 module.exports = router

@@ -41,20 +41,14 @@ const ProfileContent = ({ active }: Props) => {
     }
   }, [error, successMessage]);
 
+  // UPLOAD IMAGE
   const handleImage = async (e: any) => {
     const reader = new FileReader();
 
     reader.onload = () => {
       if (reader.readyState === 2) {
         setAvatar(reader.result);
-        axios
-          .put(
-            `${server}/user/update-avatar`,
-            { avatar: reader.result },
-            {
-              withCredentials: true,
-            }
-          )
+        axios.put(`${server}/user/update-avatar`, { avatar: reader.result }, { withCredentials: true })
           .then((response) => {
             dispatch(loadUser());
             toast.success("avatar updated successfully!");
@@ -80,6 +74,7 @@ const ProfileContent = ({ active }: Props) => {
     {active === 1 && (
       <>
         <div className="flex justify-center w-full">
+          {/* UPLOAD IMAGE */}
           <div className="relative">
             <Image
               src={`${user?.avatar?.url || "/profile.jpg"}`}
@@ -279,28 +274,14 @@ const AllOrders = () => {
   
   const AllRefundOrders = () => {
     const { user } = useSelector((state: any) => state.user);
-    // const { orders } = useSelector((state) => state.order);
+    const { orders } = useSelector((state: any) => state.order);
     const dispatch = useDispatch();
 
-    const orders = [
-      {
-          _id: "32434234oeortekt43ktl343",
-          orderItems: [
-              {
-                  name: "Sapoooo"
-              }
-          ],
-          totalPrice: 120,
-          orderStatus: "Processing"
-      }
-  ]
+    useEffect(() => {
+      dispatch(getAllOrdersOfUser(user._id));
+    }, []);
   
-    // useEffect(() => {
-    //   dispatch(getAllOrdersOfUser(user._id));
-    // }, []);
-  
-    const eligibleOrders =
-      orders && orders.filter((item) => item.orderStatus === "Processing refund");
+    const eligibleOrders = orders && orders.filter((item: any) => item.status === "Processing refund");
   
     const columns = [
       { field: "id", headerName: "Order ID", minWidth: 150, flex: 0.7 },
@@ -353,17 +334,17 @@ const AllOrders = () => {
   
     const row: any = [];
   
-    orders && orders.forEach((item) => {
+    eligibleOrders && eligibleOrders.forEach((item: any) => {
         row.push({
           id: item._id,
-          itemsQty: item.orderItems.length,
+          itemsQty: item.cart.length,
           total: "US$ " + item.totalPrice,
-          status: item.orderStatus,
+          status: item.status,
         });
       });
   
     return (
-      <div className="pl-8 pt-1">
+      <div className="mx-8 pt-1 bg-white">
         <DataGrid
           rows={row}
           columns={columns}
@@ -375,25 +356,12 @@ const AllOrders = () => {
   
   const TrackOrder = () => {
     const { user } = useSelector((state: any) => state.user);
-    // const { orders } = useSelector((state) => state.order);
+    const { orders } = useSelector((state: any) => state.order);
     const dispatch = useDispatch();
-
-    const orders = [
-      {
-          _id: "32434234oeortekt43ktl343",
-          orderItems: [
-              {
-                  name: "Sapoooo"
-              }
-          ],
-          totalPrice: 120,
-          orderStatus: "Processing"
-      }
-  ]
   
-    // useEffect(() => {
-    //   dispatch(getAllOrdersOfUser(user._id));
-    // }, []);
+    useEffect(() => {
+      dispatch(getAllOrdersOfUser(user._id));
+    }, []);
   
     const columns = [
       { field: "id", headerName: "Order ID", minWidth: 150, flex: 0.7 },
@@ -433,7 +401,7 @@ const AllOrders = () => {
         renderCell: (params: any) => {
           return (
             <>
-              <Link href={`/user/track/order/${params.id}`}>
+              <Link href={`/user/track-order/${params.id}`}>
                 <Button>
                   <MdTrackChanges size={20} />
                 </Button>
@@ -446,17 +414,17 @@ const AllOrders = () => {
   
     const row: any = [];
   
-    orders && orders.forEach((item) => {
+    orders && orders.forEach((item: any) => {
         row.push({
           id: item._id,
-          itemsQty: item.orderItems.length,
+          itemsQty: item.cart.length,
           total: "US$ " + item.totalPrice,
-          status: item.orderStatus,
+          status: item.status,
         });
       });
   
     return (
-      <div className="pl-8 pt-1">
+      <div className="mx-8 pt-1 bg-white">
         <DataGrid
           rows={row}
           columns={columns}

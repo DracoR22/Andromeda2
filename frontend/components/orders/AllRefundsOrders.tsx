@@ -1,15 +1,15 @@
 'use client'
 
-import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react"
 import { getAllOrdersOfShop } from "@/redux/actions/order";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import Link from "next/link"
 import { Button } from "@mui/material";
 import { AiOutlineArrowRight } from "react-icons/ai";
-import { DataGrid } from "@mui/x-data-grid";
 import CatLoader from "../loaders/CatLoader";
+import { DataGrid } from "@mui/x-data-grid";
 
-const AllOrders = () => {
+const AllRefundsOrders = () => {
 
     const { orders, isLoading } = useSelector((state: any) => state.order);
     const { seller } = useSelector((state: any) => state.seller);
@@ -19,6 +19,8 @@ const AllOrders = () => {
     useEffect(() => {
       dispatch(getAllOrdersOfShop(seller._id));
     }, [dispatch]);
+  
+    const refundOrders = orders && orders.filter((item: any) => item.status === "Processing refund"  || item.status === "Refund Success");
   
     const columns = [
       { field: "id", headerName: "Order ID", minWidth: 150, flex: 0.7 },
@@ -62,7 +64,7 @@ const AllOrders = () => {
             <>
               <Link href={`/order/${params.id}`}>
                 <Button>
-                  <AiOutlineArrowRight size={20}/>
+                  <AiOutlineArrowRight size={20} />
                 </Button>
               </Link>
             </>
@@ -73,7 +75,8 @@ const AllOrders = () => {
   
     const row: any = [];
   
-    orders && orders.forEach((item: any) => {
+    refundOrders &&
+    refundOrders.forEach((item: any) => {
         row.push({
           id: item._id,
           itemsQty: item.cart.length,
@@ -99,4 +102,4 @@ const AllOrders = () => {
   )
 }
 
-export default AllOrders
+export default AllRefundsOrders

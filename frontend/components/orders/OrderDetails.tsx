@@ -134,7 +134,7 @@ const OrderDetails = ({ id }: OrderDetailsProps) => {
         >
           {[
             "Processing",
-            "Transferred to delivery partner",
+            "Transfered to delivery partner",
             "Shipping",
             "Received",
             "On the way",
@@ -143,7 +143,7 @@ const OrderDetails = ({ id }: OrderDetailsProps) => {
             .slice(
               [
                 "Processing",
-                "Transferred to delivery partner",
+                "Transfered to delivery partner",
                 "Shipping",
                 "Received",
                 "On the way",

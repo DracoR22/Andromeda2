@@ -179,5 +179,63 @@ getShopInfo: catchAsyncErrors(async(req, res, next) => {
   } catch (error) {
     return next(new ErrorHandler(error.message, 500));
   }
+}),
+
+//----------------------------------------------//Update Shop Avatar/--------------------------------------------//
+updateShopAvatar: catchAsyncErrors(async(req, res, next) => {
+  try {
+    let existsSeller = await Shop.findById(req.seller._id);
+
+    const imageId = existsSeller.avatar.public_id;
+
+    await cloudinary.v2.uploader.destroy(imageId);
+
+    const myCloud = await cloudinary.v2.uploader.upload(req.body.avatar, {
+      folder: "ShopAvatars",
+    });
+
+    // Update The Shop Avatar With Cloudinary Data
+    existsSeller.avatar = {
+      public_id: myCloud.public_id,
+      url: myCloud.secure_url,
+    };
+
+
+    await existsSeller.save();
+
+    res.status(200).json({
+    success: true,
+    seller:existsSeller,
+    });
+  } catch (error) {
+    return next(new ErrorHandler(error.message, 500));
+  }
+}),
+
+//----------------------------------------------//Update Shop Info/--------------------------------------------//
+updateShopInfo: catchAsyncErrors(async(req, res, next) => {
+  try {
+    const { name, description, address, phoneNumber, zipCode } = req.body
+
+    const shop = await Shop.findById(req.seller._id)
+    if(!shop) {
+      return next(new ErrorHandler("Shop not found", 400));
+    }
+
+    const seller = await Shop.findByIdAndUpdate(shop._id, {
+       name, 
+       description, 
+       address, 
+       phoneNumber, 
+       zipCode
+     })
+
+    res.status(201).json({
+      success: true,
+      seller
+    })
+  } catch (error) {
+    return next(new ErrorHandler(error.message, 500));
+  }
 })
 }

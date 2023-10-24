@@ -6,6 +6,9 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ProductCard from "../product/ProductCard";
 import { getAllProductsShop } from "@/redux/actions/product";
+import { getAllEventsShop } from "@/redux/actions/event";
+import Image from "next/image"
+import Ratings from "../product/Ratings";
 
 interface Props {
     isOwner: boolean
@@ -17,11 +20,15 @@ const ShopProfileData = ({ isOwner, id }: Props) => {
     const [active, setActive] = useState(1);
 
     const { products, isLoading } = useSelector((state: any) => state.products);
+    const { events } = useSelector((state: any) => state.events);
     const dispatch = useDispatch()
 
     useEffect(() => {
       dispatch(getAllProductsShop(id));
+      dispatch(getAllEventsShop(id));
     }, [dispatch]);
+
+    const allReviews = products && products.map((product: any) => product.reviews).flat();
 
   return (
    <>
@@ -87,33 +94,48 @@ const ShopProfileData = ({ isOwner, id }: Props) => {
       {active === 2 && (
         <div className="w-full">
           <div className="grid grid-cols-1 gap-[20px] md:grid-cols-2 md:gap-[25px] lg:grid-cols-3 lg:gap-[25px] xl:grid-cols-4 xl:gap-[20px] mb-12 border-0">
-            {/* {events &&
-              events.map((i, index) => (
+            {events && events.map((i: any, index: number) => (
                 <ProductCard
                   data={i}
                   key={index}
                   isShop={true}
                   isEvent={true}
                 />
-              ))} */}
+              ))}
           </div>
-          {/* {events && events.length === 0 && (
+          {events && events.length === 0 && (
             <h5 className="w-full text-center py-5 text-[18px]">
               No Events have for this shop!
             </h5>
-          )} */}
+          )}
         </div>
       )}
   
       {active === 3 && (
-        <div className="w-full">
-  
-          {/* {allReviews && allReviews.length === 0 && (
-            <h5 className="w-full text-center py-5 text-[18px]">
-              No Reviews have for this shop!
-            </h5>
-          )} */}
-        </div>
+       <div className="w-full">
+       {allReviews && allReviews.map((item: any, index: number) => (
+           <div className="w-full flex my-4" key={index}>
+             <Image
+               src={`${item.user.avatar?.url}`}
+               className="w-[50px] h-[50px] rounded-full"
+               alt="" width={100} height={100}
+             />
+             <div className="pl-2">
+               <div className="flex w-full items-center">
+                 <h1 className="font-[600] pr-2">{item.user.name}</h1>
+                 <Ratings rating={item.rating} />
+               </div>
+               <p className="font-[400] text-[#000000a7]">{item?.comment}</p>
+               <p className="text-[#000000a7] text-[14px]">{"2 days ago"}</p>
+             </div>
+           </div>
+         ))}
+       {allReviews && allReviews.length === 0 && (
+         <h5 className="w-full text-center py-5 text-[18px]">
+           No Reviews have for this shop!
+         </h5>
+       )}
+     </div>
       )}
     </div>
     )}
