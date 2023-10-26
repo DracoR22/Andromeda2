@@ -21,7 +21,7 @@ module.exports = {
                shopItemsMap.get(shopId).push(item)
              }
 
-              // create an order for each shop
+            // Create An Order For Each Shop
             const orders = [];
 
             for (const [shopId, items] of shopItemsMap) {

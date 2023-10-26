@@ -14,7 +14,7 @@ const ProductPage = ({ params }: { params: { productId: string }}) => {
 
   const searchParams = useSearchParams()
 
-  const { allProducts } = useSelector((state: any) => state.products);
+  const { allProducts, isLoading } = useSelector((state: any) => state.products);
   const { allEvents } = useSelector((state: any) => state.events);
 
   const id = params.productId

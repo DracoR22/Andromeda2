@@ -1,32 +1,105 @@
 'use client'
 
+import { getAllOrdersOfShop } from "@/redux/actions/order";
+import { loadSeller } from "@/redux/actions/user";
 import styles from "@/styles/styles"
-import { useState } from "react";
+import { server } from "@/utils/server";
+import axios from "axios";
+import { useEffect, useState } from "react";
 import { AiOutlineDelete } from "react-icons/ai";
 import { RxCross1 } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
+import { toast } from "react-toastify";
 
 const Withdraw = () => {
+  const [open, setOpen] = useState(false);
+  const dispatch = useDispatch();
+  const { seller } = useSelector((state: any) => state.seller);
+  const [paymentMethod, setPaymentMethod] = useState(false);
+  const [withdrawAmount, setWithdrawAmount] = useState(50);
+  const [bankInfo, setBankInfo] = useState({
+    bankName: "",
+    bankCountry: "",
+    bankSwiftCode: null,
+    bankAccountNumber: null,
+    bankHolderName: "",
+    bankAddress: "",
+  });
 
-    const [open, setOpen] = useState<any>(false);
-    const dispatch = useDispatch();
-    const { seller } = useSelector((state: any) => state.seller);
-    const [paymentMethod, setPaymentMethod] = useState(false);
-    const [withdrawAmount, setWithdrawAmount] = useState(50);
+  useEffect(() => {
+    dispatch(getAllOrdersOfShop(seller._id));
+  }, [dispatch]);
 
-    const handleSubmit = () => {}
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
+
+    const withdrawMethod = {
+      bankName: bankInfo.bankName,
+      bankCountry: bankInfo.bankCountry,
+      bankSwiftCode: bankInfo.bankSwiftCode,
+      bankAccountNumber: bankInfo.bankAccountNumber,
+      bankHolderName: bankInfo.bankHolderName,
+      bankAddress: bankInfo.bankAddress,
+    };
+
+    setPaymentMethod(false);
+
+    await axios.put(`${server}/shop/update-payment-methods`, { withdrawMethod }, { withCredentials: true })
+      .then((res) => {
+        toast.success("Withdraw method added successfully!");
+        dispatch(loadSeller());
+        setBankInfo({
+          bankName: "",
+          bankCountry: "",
+          bankSwiftCode: null,
+          bankAccountNumber: null,
+          bankHolderName: "",
+          bankAddress: "",
+        });
+      })
+      .catch((error) => {
+        console.log(error.response.data.message);
+      });
+  };
+
+  const deleteHandler = async () => {
+    await axios
+      .delete(`${server}/shop/delete-withdraw-method`, {
+        withCredentials: true,
+      })
+      .then((res) => {
+        toast.success("Withdraw method deleted successfully!");
+        dispatch(loadSeller());
+      });
+  };
+
+  const error = () => {
+    toast.error("You dont have enough balance to withdraw!");
+  };
+
+  const withdrawHandler = async () => {
+    if (withdrawAmount < 50 || withdrawAmount > availableBalance) {
+      toast.error("You can't withdraw this amount!");
+    } else {
+      const amount = withdrawAmount;
+      await axios.post(`${server}/withdraw/create-withdraw-request`, { amount }, { withCredentials: true })
+        .then((res) => {
+          toast.success("Withdraw money request is successful!");
+        });
+    }
+  };
+
+  const availableBalance = seller?.availableBalance.toFixed(2);
 
   return (
     <div className="w-full h-[90vh] p-8">
     <div className="w-full bg-white h-full rounded flex items-center justify-center flex-col">
       <h5 className="text-[20px] pb-4">
-        {/* Available Balance: ${availableBalance} */}
+        Available Balance: ${availableBalance}
       </h5>
       <div
         className={`${styles.button} text-white !h-[42px] !rounded`}
-        // onClick={() => (availableBalance < 50 ? error() : setOpen(true))} 
-        onClick={() => setOpen(true)} 
-      >
+        onClick={() => (availableBalance < 50 ? error() : setOpen(true))} >
         Withdraw
       </div>
     </div>

@@ -9,6 +9,7 @@ import { getAllProductsShop } from "@/redux/actions/product";
 import { getAllEventsShop } from "@/redux/actions/event";
 import Image from "next/image"
 import Ratings from "../product/Ratings";
+import moment from "moment";
 
 interface Props {
     isOwner: boolean
@@ -125,8 +126,8 @@ const ShopProfileData = ({ isOwner, id }: Props) => {
                  <h1 className="font-[600] pr-2">{item.user.name}</h1>
                  <Ratings rating={item.rating} />
                </div>
-               <p className="font-[400] text-[#000000a7]">{item?.comment}</p>
-               <p className="text-[#000000a7] text-[14px]">{"2 days ago"}</p>
+               <p className="font-[400] text-neutral-800">{item?.comment}</p>
+               <p className="text-[#000000a7] text-[14px]">{moment(item?.createdAt).fromNow()}</p>
              </div>
            </div>
          ))}

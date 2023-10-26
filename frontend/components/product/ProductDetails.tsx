@@ -12,6 +12,8 @@ import { AiFillHeart, AiOutlineHeart, AiOutlineMessage, AiOutlineShoppingCart } 
 import { useDispatch, useSelector } from "react-redux"
 import { toast } from "react-toastify"
 import Ratings from "./Ratings"
+import axios from "axios"
+import { server } from "@/utils/server"
 
 interface Props {
     data: any
@@ -21,6 +23,7 @@ const ProductDetails = ({ data }: Props) => {
 
   const { products } = useSelector((state: any) => state.products);
   const { wishlist } = useSelector((state: any) =>  state.wishlist)
+  const { user } = useSelector((state: any ) => state.user)
   const { cart } = useSelector((state: any) => state.cart)
 
    const [count, setCount] = useState(1)
@@ -83,8 +86,17 @@ const ProductDetails = ({ data }: Props) => {
   const averageRating = avg.toFixed(2);
 
 
-  const handleMessageSubmit = () => {
-    router.push("/inbox?conversation=507hrehrrtertwet")
+  const handleMessageSubmit = async () => {
+    if(user) {
+      const groupTitle = data._id + user._id
+      const userId = user._id
+      const sellerId = data.shop._id
+      await axios.post(`${server}/conversation/create-new-conversation`, { groupTitle, userId, sellerId }, { withCredentials: true })
+      .then((res) => { router.push(`/conversation/${res.data.conversation._id}`) })
+      .catch((error) => { toast.error(error.response.data.message) })
+    } else {
+      toast.error(`Please login to contact ${data.shop.name}`)
+    }
   }
 
   return (
@@ -177,7 +189,8 @@ const ProductDetails = ({ data }: Props) => {
                        ({averageRating}/5) Ratings
                      </h5>
                    </div>
-                   <div className={`bg-black flex items-center cursor-pointer hover:bg-gray-900 transition mt-4 rounded h-11 px-3`} onClick={handleMessageSubmit}>
+                   <div className={`bg-black flex items-center cursor-pointer hover:bg-gray-900 transition mt-4 rounded h-11 px-3`} 
+                   onClick={handleMessageSubmit}>
                      <span className="text-white flex items-center">
                        Contact Seller <AiOutlineMessage className="ml-1"/>
                      </span>

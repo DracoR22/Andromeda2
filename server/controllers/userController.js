@@ -21,7 +21,6 @@ module.exports = {
 
     // Check If Other User Already Has That Email
     const userEmail = await User.findOne({ email })
-
     if(userEmail) {
         return next(new ErrorHandler("User already exists", 400))
     }
