@@ -14,5 +14,6 @@ router.put('/update-avatar', isAuthenticated, userController.updateAvatar)
 router.put('/update-user-addresses', isAuthenticated, userController.updateUserAddresses)
 router.delete('/delete-user-address/:id', isAuthenticated, userController.deleteUserAddress)
 router.put('/update-user-password', isAuthenticated, userController.updatePassword)
+router.get('/user-info/:id', userController.userInfo)
 
 module.exports = router

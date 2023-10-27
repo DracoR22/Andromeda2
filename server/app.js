@@ -3,6 +3,7 @@ const ErrorHandler = require("./middleware/error")
 const cookieParser = require("cookie-parser")
 const cors = require("cors")
 
+// Routes
 const userRoutes = require("./routes/userRoutes")
 const shopRoutes = require("./routes/shopRoutes")
 const productRoutes = require("./routes/productRoutes")
@@ -11,6 +12,7 @@ const couponCodeRoutes = require("./routes/couponCodeRoutes")
 const paymentRoutes = require("./routes/paymentRoutes")
 const orderRoutes = require("./routes/orderRoutes")
 const conversationRoutes = require("./routes/conversationRoutes")
+const messageRoutes = require("./routes/messageRoutes")
 
 const app = express()
 
@@ -35,6 +37,8 @@ app.use("/api/v2/coupon", couponCodeRoutes)
 app.use("/api/v2/payment", paymentRoutes)
 app.use("/api/v2/order", orderRoutes)
 app.use("/api/v2/conversation", conversationRoutes)
+app.use("/api/v2/message", messageRoutes)
+
 
 // Middleware Calls
 app.use(ErrorHandler)

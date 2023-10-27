@@ -48,6 +48,40 @@ getSellerConversations: catchAsyncErrors(async(req, res, next) => {
   } catch (error) {
     return next(new ErrorHandler(error.message, 500));
   }
+}),
+
+//-----------------------------------------//Get All User Conversations//--------------------------------------//
+getUserConversations: catchAsyncErrors(async(req, res, next) => {
+  try {
+    const conversations = await Conversation.find({
+      members: {
+        $in: [req.params.id],
+      },
+    }).sort({ updatedAt: -1, createdAt: -1 });
+
+    res.status(201).json({
+      success: true,
+      conversations,
+    });
+  } catch (error) {
+    return next(new ErrorHandler(error.message, 500));
+  }
+}),
+
+//---------------------------------------------//Update Last Message//-----------------------------------------//
+updateLastMessage: catchAsyncErrors(async(req, res, next) => {
+  try {
+    const { lastMessage, lastMessageId } = req.body
+
+    const conversation = await Conversation.findByIdAndUpdate(req.params.id, { lastMessage, lastMessageId })
+
+    res.status(201).json({
+      success: true,
+      conversation
+    })
+  } catch (error) {
+    return next(new ErrorHandler(error.message, 500));
+  }
 })
 
 }

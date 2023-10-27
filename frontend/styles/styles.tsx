@@ -10,7 +10,7 @@ const styles = {
     button: 'w-[150px] bg-black h-[50px] my-3 flex items-center justify-center rounded-xl cursor-pointer',
     cart_button: "px-20 p-2 h-[38px] rounded-full bg-[#f63b60] flex items-center justify-center cursor-pointer",
     cart_button_text:"text-[#fff] text-[16px] font-[600]",
-    input:"w-full border p-1 rounded-[5px]",
+    input:"w-full border p-2 rounded-full",
     activeStatus:"w-[10px] h-[10px] rounded-full absolute top-0 right-1 bg-[#40d132]",
     noramlFlex:"flex items-center"
   };

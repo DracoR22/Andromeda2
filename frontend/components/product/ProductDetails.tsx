@@ -92,7 +92,7 @@ const ProductDetails = ({ data }: Props) => {
       const userId = user._id
       const sellerId = data.shop._id
       await axios.post(`${server}/conversation/create-new-conversation`, { groupTitle, userId, sellerId }, { withCredentials: true })
-      .then((res) => { router.push(`/conversation/${res.data.conversation._id}`) })
+      .then((res) => { router.push(`/inbox?${res.data.conversation._id}`) })
       .catch((error) => { toast.error(error.response.data.message) })
     } else {
       toast.error(`Please login to contact ${data.shop.name}`)

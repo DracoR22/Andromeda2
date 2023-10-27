@@ -38,5 +38,21 @@ createMessage: catchAsyncErrors(async(req, res, next) => {
     } catch (error) {
         return next(new ErrorHandler(error.message, 500));
     }
+}),
+
+//----------------------------------//Get All Messages Of Each Conversation//-----------------------------------//
+getAllMessages: catchAsyncErrors(async(req, res, next) => {
+  try {
+    const messages = await Message.find({
+      conversationId: req.params.id
+    })
+
+    res.status(201).json({
+      success: true,
+      messages
+    })
+  } catch (error) {
+    return next(new ErrorHandler(error.message, 500));
+  }
 })
 }
