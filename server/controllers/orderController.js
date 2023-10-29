@@ -115,7 +115,7 @@ updateOrderStatus: catchAsyncErrors(async(req, res, next) => {
     async function updateSellerInfo(amount) {
       const seller = await Shop.findById(req.seller.id);
       
-      seller.availableBalance = amount;
+      seller.availableBalance = seller.availableBalance + amount;
 
       await seller.save();
     }
@@ -178,6 +178,20 @@ acceptRefund: catchAsyncErrors(async(req, res, next) => {
 
       await product.save({ validateBeforeSave: false });
     }
+  } catch (error) {
+    return next(new ErrorHandler(error.message, 500));
+  }
+}),
+
+//----------------------------------------------//Get All Orders//---------------------------------------------//
+getAllOrdersAdmin: catchAsyncErrors(async(req, res, next) => {
+  try {
+    const orders = await Order.find().sort({deliveredAt: -1, createdAt: -1 })
+
+    res.status(201).json({
+      success: true,
+      orders
+    })
   } catch (error) {
     return next(new ErrorHandler(error.message, 500));
   }

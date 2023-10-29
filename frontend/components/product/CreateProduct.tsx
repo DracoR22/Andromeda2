@@ -68,7 +68,7 @@ const CreateProduct = ({ seller }: Props) => {
       stock,
       shopId: seller._id,
       images,
-  })
+  }, { withCredentials: true })
 
   toast.success("Product Created!")
    router.push("/dashboard")

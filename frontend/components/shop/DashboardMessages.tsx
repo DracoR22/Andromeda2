@@ -31,7 +31,7 @@ const DashboardMessages = () => {
   const [activeStatus, setActiveStatus] = useState(false);
   const [images, setImages] = useState();
   const [open, setOpen] = useState(false);
-  const scrollRef = useRef(null);
+  const scrollRef = useRef<any>(null);
 
   // CONNECT SOCKET
   useEffect(() => {
@@ -149,6 +149,10 @@ const DashboardMessages = () => {
       });
   };
 
+  useEffect(() => {
+    scrollRef.current?.scrollIntoView({ beahaviour: "smooth" });
+  }, [messages]);
+
 
   return (
     <div className="w-[90%] bg-white m-5 h-[85vh] overflow-y-scroll rounded">
@@ -169,7 +173,7 @@ const DashboardMessages = () => {
         <>
           <SellerInbox setOpen={setOpen} newMessage={newMessage} setNewMessage={setNewMessage}
           sendMessageHandler={sendMessageHandler} messages={messages} sellerId={seller._id}
-          userData={userData} activeStatus={activeStatus}/>
+          userData={userData} activeStatus={activeStatus}    scrollRef={scrollRef}/>
         </>
       )}
     </div>
@@ -258,9 +262,10 @@ interface SellerInboxProps {
   sellerId: string
   userData: any
   activeStatus: any
+  scrollRef: any
 }
 
-const SellerInbox = ({ setOpen, newMessage, setNewMessage, sendMessageHandler, messages, sellerId, userData, activeStatus }: SellerInboxProps) => {
+const SellerInbox = ({ setOpen, newMessage, setNewMessage, sendMessageHandler, messages, sellerId, userData, activeStatus, scrollRef }: SellerInboxProps) => {
 
   return (
     <div className="w-full min-h-full flex flex-col justify-between">
@@ -283,8 +288,7 @@ const SellerInbox = ({ setOpen, newMessage, setNewMessage, sendMessageHandler, m
       {messages && messages.map((item: any, index: number) => {
           return (
             <div className={`flex w-full my-2 ${item.sender === sellerId ? "justify-end" : "justify-start"}`} key={index}
-              // ref={scrollRef}
-              >
+              ref={scrollRef}>
               {item.sender !== sellerId && (
                 <img src={`${userData?.avatar?.url}`} className="w-[40px] h-[40px] rounded-full mr-3" alt=""/>
               )}

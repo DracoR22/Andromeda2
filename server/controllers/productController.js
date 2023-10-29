@@ -163,5 +163,19 @@ createReview: catchAsyncErrors(async(req, res, next) => {
   } catch (error) {
     return next(new ErrorHandler(error.message, 500));
   }
+}),
+
+//------------------------------------------//Get All Products (Admin)//----------------------------------------//
+AdminGetAllProducts: catchAsyncErrors(async(req, res, next) => {
+  try {
+    const products = await Product.find().sort({ createdAt: -1 })
+
+    res.status(201).json({
+      success: true,
+      products
+    })
+  } catch (error) {
+    return next(new ErrorHandler(error.message, 500));
+  }
 })
 }

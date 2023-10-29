@@ -237,5 +237,76 @@ updateShopInfo: catchAsyncErrors(async(req, res, next) => {
   } catch (error) {
     return next(new ErrorHandler(error.message, 500));
   }
+}),
+
+//-------------------------------------------//Get All Sellers (Admin)//-----------------------------------------//
+allSellersAdmin: catchAsyncErrors(async(req, res, next) => {
+  try {
+    const sellers = await Shop.find().sort({ createdAt: -1 })
+
+    res.status(201).json({
+      success: true,
+      sellers
+    })
+  } catch (error) {
+    return next(new ErrorHandler(error.message, 500));
+  }
+}),
+
+//--------------------------------------------//Delete Seller (Admin)//------------------------------------------//
+deleteSellerAdmin: catchAsyncErrors(async(req, res, next) => {
+  try {
+     const seller = await Shop.findById(req.params.id)
+     if(!seller) {
+      return next(new ErrorHandler("Seller not found", 500));
+     }
+
+     const deleteSeller = await Shop.findByIdAndDelete(req.params.id)
+
+     res.status(201).json({
+      success: true,
+      deleteSeller
+     })
+  } catch (error) {
+    return next(new ErrorHandler(error.message, 500));
+  }
+}),
+
+//---------------------------------------//Update Seller Withdraw Method//-------------------------------------//
+updateWithdraw: catchAsyncErrors(async(req, res, next) => {
+  try {
+    const { withdrawMethod } = req.body
+
+    const seller = await Shop.findByIdAndUpdate(req.seller._id, { withdrawMethod })
+
+    res.status(201).json({
+      success: true,
+      seller
+    })
+  } catch (error) {
+    return next(new ErrorHandler(error.message, 500));
+  }
+}),
+
+//---------------------------------------//Delete Seller Withdraw Method//-------------------------------------//
+deleteWithdraw: catchAsyncErrors(async(req, res, next) => {
+  try {
+    const seller = await Shop.findById(req.seller._id);
+
+    if (!seller) {
+      return next(new ErrorHandler("Seller not found with this id", 400));
+    }
+
+    seller.withdrawMethod = null;
+
+    await seller.save();
+
+    res.status(201).json({
+      success: true,
+      seller,
+    });
+  } catch (error) {
+    return next(new ErrorHandler(error.message, 500));
+  }
 })
 }

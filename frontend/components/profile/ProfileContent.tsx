@@ -182,11 +182,11 @@ const ProfileContent = ({ active }: Props) => {
     )}
 
     {/*  Payment Methods */}
-    {active === 8 && (
+    {/* {active === 8 && (
       <div>
          <PaymentMethod/>
       </div>
-    )}
+    )} */}
   </div>
   )
 }

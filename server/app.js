@@ -13,6 +13,7 @@ const paymentRoutes = require("./routes/paymentRoutes")
 const orderRoutes = require("./routes/orderRoutes")
 const conversationRoutes = require("./routes/conversationRoutes")
 const messageRoutes = require("./routes/messageRoutes")
+const withdrawRoutes = require("./routes/withdrawRoutes")
 
 const app = express()
 
@@ -38,6 +39,7 @@ app.use("/api/v2/payment", paymentRoutes)
 app.use("/api/v2/order", orderRoutes)
 app.use("/api/v2/conversation", conversationRoutes)
 app.use("/api/v2/message", messageRoutes)
+app.use("/api/v2/withdraw", withdrawRoutes)
 
 
 // Middleware Calls

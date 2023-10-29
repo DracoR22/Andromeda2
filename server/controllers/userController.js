@@ -330,5 +330,48 @@ userInfo: catchAsyncErrors(async(req, res, next) => {
   } catch (error) {
     return next(new ErrorHandler(error.message, 500));
   }
+}),
+
+//---------------------------------------------//Get All Users//--------------------------------------------//
+allUsersAdmin: catchAsyncErrors(async(req, res, next) => {
+  try {
+    const users = await User.find().sort({ createdAt: -1 })
+
+    res.status(201).json({
+      success: true,
+      users
+    })
+  } catch (error) {
+    return next(new ErrorHandler(error.message, 500));
+  }
+}),
+
+//---------------------------------------------//Delete User (Admin)//-------------------------------------------//
+deleteUser: catchAsyncErrors(async(req, res, next) => {
+  try {
+    const user = await User.findById(req.params.id)
+    if(!user) {
+      return next(new ErrorHandler("User to delete not found", 400));
+    }
+
+    if(req.params.id === req.user.id) {
+      return next(new ErrorHandler("You cant delete your profile from here", 400));
+    } else {
+
+      const imageId = user.avatar.public_id;
+
+      await cloudinary.v2.uploader.destroy(imageId);
+  
+      await User.findByIdAndDelete(req.params.id)
+
+    }
+
+    res.status(201).json({
+      success: true,
+      message: "User has been deleted"
+    })
+  } catch (error) {
+    return next(new ErrorHandler(error.message, 500));
+  }
 })
 }

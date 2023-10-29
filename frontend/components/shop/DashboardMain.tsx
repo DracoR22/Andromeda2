@@ -65,7 +65,7 @@ const DashboardMain = () => {
         renderCell: (params: any) => {
           return (
             <>
-              <Link href={`/dashboard/order/${params.id}`}>
+              <Link href={`/order/${params.id}`}>
                 <Button>
                   <AiOutlineArrowRight size={20} />
                 </Button>
@@ -106,7 +106,7 @@ const DashboardMain = () => {
           </h3>
         </div>
         <h5 className="pt-2 pl-[36px] text-[22px] font-[500]">${availableBalance}</h5>
-        <Link href="/dashboard/withdraw-money">
+        <Link href="/dashboard/withdraw">
           <h5 className="pt-4 pl-[2] text-[#077f9c]">Withdraw Money</h5>
         </Link>
       </div>
@@ -138,7 +138,7 @@ const DashboardMain = () => {
           </h3>
         </div>
         <h5 className="pt-2 pl-[36px] text-[22px] font-[500]">{products && products.length}</h5>
-        <Link href="/dashboard-products">
+        <Link href="/dashboard/products">
           <h5 className="pt-4 pl-2 text-[#077f9c]">View Products</h5>
         </Link>
       </div>

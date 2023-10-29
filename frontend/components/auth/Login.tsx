@@ -11,7 +11,8 @@ import { server } from "@/utils/server"
 import { toast } from "react-toastify"
 import { redirect, useRouter } from "next/navigation"
 import { signIn } from "next-auth/react"
-import useLoginModal from "@/hooks/UseLoginModal"
+import { useDispatch } from "react-redux"
+
 
 
 const Login = () => {
@@ -23,7 +24,7 @@ const Login = () => {
     const [password, setPassword] = useState("");
     const [visible, setVisible] = useState(false);
 
-    const loginModal = useLoginModal()
+    const dispatch = useDispatch()
 
     const onSubmit = async (e: any) => {
        e.preventDefault()
@@ -44,16 +45,14 @@ const Login = () => {
 
     
     const handleGoogleSignIn = async () => {
-     
         const result = await signIn('google');
+
         if (result?.error) {
           console.error('Google Sign-In Error:', result.error);
         } else {
           // Redirect to the homepage
           // Reload the page once the route change is complete
-        
         }
-      
     };
     
   return (

@@ -34,3 +34,12 @@ exports.isSeller = catchAsyncErrors(async(req, res, next) => {
     next()
 })
 
+// Check If User Is Admin Middleware
+exports.isAdmin = (...roles) => {
+    return (req, res, next) => {
+        if(!roles.includes(req.user.role)) {
+            return next(new ErrorHandler(`${req.user.role} cannot access to this resource`))
+        }
+        next()
+    }
+}

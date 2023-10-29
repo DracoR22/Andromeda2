@@ -49,7 +49,7 @@ export const getAllOrdersOfShop: any = (shopId: any) => async (dispatch: Dispatc
 };
 
 // get all orders of Admin
-export const getAllOrdersOfAdmin = () => async (dispatch: Dispatch) => {
+export const getAllOrdersOfAdmin: any = () => async (dispatch: Dispatch) => {
   try {
     dispatch({
       type: "adminAllOrdersRequest",

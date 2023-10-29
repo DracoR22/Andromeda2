@@ -30,7 +30,7 @@ const UserInboxPage = () => {
     const [activeStatus, setActiveStatus] = useState(false);
     const [images, setImages] = useState();
     const [open, setOpen] = useState(false);
-    const scrollRef = useRef(null);
+    const scrollRef = useRef<any>(null);
 
     // CONNECT SOCKET
   useEffect(() => {
@@ -148,6 +148,11 @@ const UserInboxPage = () => {
       });
   };
 
+  useEffect(() => {
+    scrollRef.current?.scrollIntoView({ beahaviour: "smooth" });
+  }, [messages]);
+
+
   return (
     <div className=" bg-white m-5 h-full overflow-y-scroll rounded">
     {!open && (
@@ -184,7 +189,7 @@ const UserInboxPage = () => {
         sellerId={user._id}
         userData={userData}
         activeStatus={activeStatus}
-        // scrollRef={scrollRef}
+        scrollRef={scrollRef}
         // handleImageUpload={handleImageUpload}
       />
     )}
@@ -273,9 +278,10 @@ const MessageList = ({ data, index, setOpen, setCurrentChat, me, setUserData, is
     sellerId: string
     userData: any
     activeStatus: any
+    scrollRef: any
   }
   
-  const SellerInbox = ({ setOpen, newMessage, setNewMessage, sendMessageHandler, messages, sellerId, userData, activeStatus }: SellerInboxProps) => {
+  const SellerInbox = ({ setOpen, newMessage, setNewMessage, sendMessageHandler, messages, sellerId, userData, activeStatus, scrollRef }: SellerInboxProps) => {
   
     return (
       <div className="w-full min-h-full flex flex-col justify-between">
@@ -298,7 +304,7 @@ const MessageList = ({ data, index, setOpen, setCurrentChat, me, setUserData, is
         {messages && messages.map((item: any, index: number) => {
             return (
               <div className={`flex w-full my-2 ${item.sender === sellerId ? "justify-end" : "justify-start"}`} key={index}
-                // ref={scrollRef}
+                ref={scrollRef}
                 >
                 {item.sender !== sellerId && (
                   <img src={`${userData?.avatar?.url}`} className="w-[40px] h-[40px] rounded-full mr-3" alt=""/>

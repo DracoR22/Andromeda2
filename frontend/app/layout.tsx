@@ -39,7 +39,7 @@ export default function RootLayout({
         <Providers>
           <SessionProvider>
             <LoginModal/>
-      <ToastContainer autoClose={3000} theme='dark'/>
+      <ToastContainer autoClose={3000} />
         {children}
         </SessionProvider>
         </Providers>

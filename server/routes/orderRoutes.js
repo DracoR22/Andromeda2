@@ -1,10 +1,11 @@
 const express = require("express")
 const orderController = require("../controllers/orderController")
-const { isSeller } = require("../middleware/auth")
+const { isSeller, isAdmin, isAuthenticated } = require("../middleware/auth")
 
 const router = express.Router()
 
 router.post('/create-order', orderController.createOrder)
+router.get('/admin-all-orders', isAuthenticated, isAdmin("Admin"), orderController.getAllOrdersAdmin)
 router.get('/get-all-orders/:userId', orderController.allOrders)
 router.get('/get-seller-all-orders/:shopId', orderController.sellerOrders)
 router.put('/update-order-status/:id', isSeller, orderController.updateOrderStatus)

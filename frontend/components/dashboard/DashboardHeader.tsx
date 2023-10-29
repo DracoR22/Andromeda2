@@ -54,7 +54,7 @@ const DashboardHeader = ({ seller }: Props) => {
           />
         </Link>
         <Link href={`/shop/${seller._id}`}>
-        <Image src={seller.avatar?.url || "/profile.jpg"} alt="" width={40} height={40} className="w-[40px] h-[40px] rounded-full border-[3px] border-[#0eae88]"/>
+        <Image src={seller.avatar?.url || "/profile.jpg"} alt="" width={40} height={40} className="w-[40px] h-[40px] rounded-full border-[3px] border-[#0eae88] object-cover"/>
         </Link>
       </div>
     </div>

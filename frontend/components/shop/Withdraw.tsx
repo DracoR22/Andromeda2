@@ -16,8 +16,8 @@ const Withdraw = () => {
   const dispatch = useDispatch();
   const { seller } = useSelector((state: any) => state.seller);
   const [paymentMethod, setPaymentMethod] = useState(false);
-  const [withdrawAmount, setWithdrawAmount] = useState(50);
-  const [bankInfo, setBankInfo] = useState({
+  const [withdrawAmount, setWithdrawAmount] = useState<any>(50);
+  const [bankInfo, setBankInfo] = useState<any>({
     bankName: "",
     bankCountry: "",
     bankSwiftCode: null,
@@ -44,7 +44,7 @@ const Withdraw = () => {
 
     setPaymentMethod(false);
 
-    await axios.put(`${server}/shop/update-payment-methods`, { withdrawMethod }, { withCredentials: true })
+    await axios.put(`${server}/shop/update-payment-method`, { withdrawMethod }, { withCredentials: true })
       .then((res) => {
         toast.success("Withdraw method added successfully!");
         dispatch(loadSeller());
@@ -63,10 +63,7 @@ const Withdraw = () => {
   };
 
   const deleteHandler = async () => {
-    await axios
-      .delete(`${server}/shop/delete-withdraw-method`, {
-        withCredentials: true,
-      })
+    await axios.delete(`${server}/shop/delete-withdraw-method`, { withCredentials: true })
       .then((res) => {
         toast.success("Withdraw method deleted successfully!");
         dispatch(loadSeller());
@@ -74,7 +71,7 @@ const Withdraw = () => {
   };
 
   const error = () => {
-    toast.error("You dont have enough balance to withdraw!");
+    toast.error("You need at least 50$ to withdraw!");
   };
 
   const withdrawHandler = async () => {
@@ -84,7 +81,9 @@ const Withdraw = () => {
       const amount = withdrawAmount;
       await axios.post(`${server}/withdraw/create-withdraw-request`, { amount }, { withCredentials: true })
         .then((res) => {
-          toast.success("Withdraw money request is successful!");
+          toast.success("Withdraw request is successful!");
+          setOpen(false)
+          window.location.reload()
         });
     }
   };
@@ -98,7 +97,7 @@ const Withdraw = () => {
         Available Balance: ${availableBalance}
       </h5>
       <div
-        className={`${styles.button} text-white !h-[42px] !rounded`}
+        className={`${styles.button} text-white !h-[42px] rounded-full hover:bg-gray-900 transition`}
         onClick={() => (availableBalance < 50 ? error() : setOpen(true))} >
         Withdraw
       </div>
@@ -120,7 +119,7 @@ const Withdraw = () => {
           </div>
           {paymentMethod ? (
             <div>
-              <h3 className="text-[22px] font-Poppins text-center font-[600]">
+              <h3 className="text-[22px]text-center font-semibold">
                 Add new Withdraw Method:
               </h3>
               <form onSubmit={handleSubmit}>
@@ -132,10 +131,10 @@ const Withdraw = () => {
                     type="text"
                     name=""
                     required
-                    // value={bankInfo.bankName}
-                    // onChange={(e) =>
-                    //   setBankInfo({ ...bankInfo, bankName: e.target.value })
-                    // }
+                    value={bankInfo.bankName}
+                    onChange={(e) =>
+                      setBankInfo({ ...bankInfo, bankName: e.target.value })
+                    }
                     id=""
                     placeholder="Enter your Bank name!"
                     className={`${styles.input} mt-2`}
@@ -148,13 +147,13 @@ const Withdraw = () => {
                   <input
                     type="text"
                     name=""
-                    // value={bankInfo.bankCountry}
-                    // onChange={(e) =>
-                    //   setBankInfo({
-                    //     ...bankInfo,
-                    //     bankCountry: e.target.value,
-                    //   })
-                    // }
+                    value={bankInfo.bankCountry}
+                    onChange={(e) =>
+                      setBankInfo({
+                        ...bankInfo,
+                        bankCountry: e.target.value,
+                      })
+                    }
                     id=""
                     required
                     placeholder="Enter your bank Country!"
@@ -170,13 +169,13 @@ const Withdraw = () => {
                     name=""
                     id=""
                     required
-                    // value={bankInfo.bankSwiftCode}
-                    // onChange={(e) =>
-                    //   setBankInfo({
-                    //     ...bankInfo,
-                    //     bankSwiftCode: e.target.value,
-                    //   })
-                    // }
+                    value={bankInfo.bankSwiftCode}
+                    onChange={(e) =>
+                      setBankInfo({
+                        ...bankInfo,
+                        bankSwiftCode: e.target.value,
+                      })
+                    }
                     placeholder="Enter your Bank Swift Code!"
                     className={`${styles.input} mt-2`}
                   />
@@ -191,13 +190,13 @@ const Withdraw = () => {
                     type="number"
                     name=""
                     id=""
-                    // value={bankInfo.bankAccountNumber}
-                    // onChange={(e) =>
-                    //   setBankInfo({
-                    //     ...bankInfo,
-                    //     bankAccountNumber: e.target.value,
-                    //   })
-                    // }
+                    value={bankInfo.bankAccountNumber}
+                    onChange={(e) =>
+                      setBankInfo({
+                        ...bankInfo,
+                        bankAccountNumber: e.target.value,
+                      })
+                    }
                     required
                     placeholder="Enter your bank account number!"
                     className={`${styles.input} mt-2`}
@@ -211,13 +210,13 @@ const Withdraw = () => {
                     type="text"
                     name=""
                     required
-                    // value={bankInfo.bankHolderName}
-                    // onChange={(e) =>
-                    //   setBankInfo({
-                    //     ...bankInfo,
-                    //     bankHolderName: e.target.value,
-                    //   })
-                    // }
+                    value={bankInfo.bankHolderName}
+                    onChange={(e) =>
+                      setBankInfo({
+                        ...bankInfo,
+                        bankHolderName: e.target.value,
+                      })
+                    }
                     id=""
                     placeholder="Enter your bank Holder name!"
                     className={`${styles.input} mt-2`}
@@ -233,13 +232,13 @@ const Withdraw = () => {
                     name=""
                     required
                     id=""
-                    // value={bankInfo.bankAddress}
-                    // onChange={(e) =>
-                    //   setBankInfo({
-                    //     ...bankInfo,
-                    //     bankAddress: e.target.value,
-                    //   })
-                    // }
+                    value={bankInfo.bankAddress}
+                    onChange={(e) =>
+                      setBankInfo({
+                        ...bankInfo,
+                        bankAddress: e.target.value,
+                      })
+                    }
                     placeholder="Enter your bank address!"
                     className={`${styles.input} mt-2`}
                   />
@@ -247,7 +246,7 @@ const Withdraw = () => {
 
                 <button
                   type="submit"
-                  className={`${styles.button} mb-3 text-white`}
+                  className={`${styles.button} rounded-full hover:bg-gray-900 transition my-3 text-white`}
                 >
                   Add
                 </button>
@@ -255,7 +254,7 @@ const Withdraw = () => {
             </div>
           ) : (
             <>
-              <h3 className="text-[22px] font-Poppins">
+              <h3 className="text-[22px] font-semibold mb-3">
                 Available Withdraw Methods:
               </h3>
 
@@ -263,37 +262,37 @@ const Withdraw = () => {
                 <div>
                   <div className="800px:flex w-full justify-between items-center">
                     <div className="800px:w-[50%]">
-                      <h5>
+                      <h5 className="text-sm text-neutral-600">
                         Account Number:{" "}
                         {"*".repeat(
                           seller?.withdrawMethod.bankAccountNumber.length - 3
                         ) +
                           seller?.withdrawMethod.bankAccountNumber.slice(-3)}
                       </h5>
-                      <h5>Bank Name: {seller?.withdrawMethod.bankName}</h5>
+                      <h5 className="text-sm text-neutral-600">Bank Name: {seller?.withdrawMethod.bankName}</h5>
                     </div>
                     <div className="800px:w-[50%]">
                       <AiOutlineDelete
                         size={25}
                         className="cursor-pointer"
-                        // onClick={() => deleteHandler()}
+                        onClick={() => deleteHandler()}
                       />
                     </div>
                   </div>
                   <br />
-                  {/* <h4>Available Balance: {availableBalance}$</h4> */}
+                  <h4 className="font-semibold">Available Balance: {availableBalance}$</h4>
                   <br />
                   <div className="800px:flex w-full items-center">
                     <input
                       type="number"
                       placeholder="Amount..."
                       value={withdrawAmount}
-                    //   onChange={(e) => setWithdrawAmount(e.target.value)}
+                      onChange={(e) => setWithdrawAmount(e.target.value)}
                       className="800px:w-[100px] w-[full] border 800px:mr-3 p-1 rounded"
                     />
                     <div
-                      className={`${styles.button} !h-[42px] text-white`}
-                    //   onClick={withdrawHandler}
+                      className={`${styles.button} rounded-full hover:bg-gray-900 transition !h-[42px] text-white`}
+                      onClick={withdrawHandler}
                     >
                       Withdraw
                     </div>
@@ -301,14 +300,13 @@ const Withdraw = () => {
                 </div>
               ) : (
                 <div>
-                  <p className="text-[18px] pt-2">
+                  <p className="text-sm text-neutral-600 pt-2">
                     No Withdraw Methods available!
                   </p>
                   <div className="w-full flex items-center">
                     <div
-                      className={`${styles.button} text-[#fff] text-[18px] mt-4`}
-                      onClick={() => setPaymentMethod(true)}
-                    >
+                      className={`bg-black text-sm p-2 px-6 cursor-pointer hover:bg-gray-900 transition text-[#fff] text-[18px] mt-4 rounded-full`}
+                      onClick={() => setPaymentMethod(true)}>
                       Add new
                     </div>
                   </div>

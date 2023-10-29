@@ -10,6 +10,7 @@ import { useSelector } from "react-redux";
 import axios from "axios";
 import { server } from "@/utils/server";
 import { toast } from "react-toastify";
+import { signOut } from "next-auth/react";
 
 interface Props {
     active: any
@@ -21,14 +22,15 @@ const ProfileSidebar = ({ active, setActive }: Props) => {
   const router = useRouter()
   const {user} = useSelector((state: any) => state.user);
 
-  const logoutHandler = () => {
-    axios.get(`${server}/user/logout`, { withCredentials: true })
+  const logoutHandler = async () => {
+   await axios.get(`${server}/user/logout`, { withCredentials: true })
       .then((res) => {
         router.push("/")
         setTimeout(() => {
           window.location.reload();
         }, 500);
       })
+      await signOut()
       .catch((error) => {
         console.log(error.response.data.message);
       });

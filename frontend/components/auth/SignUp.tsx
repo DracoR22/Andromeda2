@@ -56,8 +56,13 @@ const SignUp = () => {
 
       const handleGoogleSignIn = async () => {
         const result = await signIn('google');
-        redirect("/")
-      };
+        if (result?.error) {
+          console.error('Google Sign-In Error:', result.error);
+        } else {
+          // Redirect to the homepage
+          // Reload the page once the route change is complete
+        }
+    };
     
 
   return (

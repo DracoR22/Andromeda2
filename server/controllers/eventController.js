@@ -110,5 +110,19 @@ allEvents: catchAsyncErrors(async(req, res, next) => {
   } catch (error) {
     return next(new ErrorHandler(error.message, 500));
   }
+}),
+
+//-------------------------------------------//Get All Events (Admin)//-----------------------------------------//
+adminAllEvents: catchAsyncErrors(async(req, res, next) => {
+  try {
+    const events = await Event.find().sort({ createdAt: -1 })
+
+    res.status(201).json({
+      success: true,
+      events
+    })
+  } catch (error) {
+    return next(new ErrorHandler(error.message, 500));
+  }
 })
 }

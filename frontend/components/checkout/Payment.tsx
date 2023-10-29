@@ -137,11 +137,11 @@ const paymentHandler = async (e: any) => {
         await axios.post(`${server}/order/create-order`, order, config)
           .then((res) => {
             setOpen(false);
-            router.push("/order/success");
             toast.success("Order successful!");
             localStorage.setItem("cartItems", JSON.stringify([]));
             localStorage.setItem("latestOrder", JSON.stringify([]));
             window.location.reload();
+            router.push("/order/success");
           });
       }
     }
