@@ -4,6 +4,7 @@ import Login from "@/components/auth/Login"
 import { useSelector } from "react-redux";
 import { redirect, useRouter } from "next/navigation"
 import { useSession } from "next-auth/react";
+import Heading from "@/utils/Heading";
 
 const LoginPage = () => {
 
@@ -21,6 +22,8 @@ const LoginPage = () => {
 
   return (
     <div>
+      <Heading title={`Login - Andromeda`} description="Andromeda is a platform where sellers can post and sell their products for free without restrictions"
+      keywords="e-commerce"/>
       <Login/>
     </div>
   )

@@ -1,4 +1,5 @@
 import { footerProductLinks, footerSupportLinks, footercompanyLinks } from "@/static/data";
+import Image from "next/image";
 import Link from "next/link";
 import { AiFillFacebook, AiFillInstagram, AiFillYoutube, AiOutlineTwitter } from "react-icons/ai";
 
@@ -8,8 +9,10 @@ const Footer = () => {
      
       <div className="grid grid-cols-1 sm:gird-cols-3 lg:grid-cols-4 gap-6 sm:px-8 px-5 py-16 sm:text-center">
         <ul className="px-5 text-center sm:text-start flex sm:block flex-col items-center">
-        
-          <p>The home and elements needeed to create beatiful products.</p>
+           <div>
+           <Image src="/andromedabg.png" alt="" height={140} width={140}/>
+           </div>
+          <p className=" text-sm">The home and elements needeed to create beatiful products.</p>
           <div className="flex items-center mt-[15px]">
             <AiFillFacebook size={25} className="cursor-pointer" />
             <AiOutlineTwitter

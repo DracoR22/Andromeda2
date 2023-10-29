@@ -25,8 +25,8 @@ app.use(cors({
 }))
 
 // Test Api
-app.get("/", (req, res, next) => {
-    res.status(200).json({success: true, message: "Api is working"})
+app.get("/", (req, res) => {
+    res.send('Api is working')
 })
 
 // Routes

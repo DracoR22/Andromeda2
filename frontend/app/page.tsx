@@ -13,7 +13,7 @@ import Heading from "@/utils/Heading"
 const Home = () => {
   return (
     <div>
-      <Heading title={`Andromeda - Home`} description="Andromeda is a platform where sellers can post and sell their products for free without restrictions"
+      <Heading title={`Home - Andromeda`} description="Andromeda is a platform where sellers can post and sell their products for free without restrictions"
       keywords="e-commerce"/>
        <Header activeHeading={1}/>
        <Hero/>

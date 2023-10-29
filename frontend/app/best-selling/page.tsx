@@ -5,6 +5,7 @@ import CatLoader from "@/components/loaders/CatLoader";
 import Header from "@/components/navbar/Header";
 import ProductCard from "@/components/product/ProductCard";
 import styles from "@/styles/styles";
+import Heading from "@/utils/Heading";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
@@ -22,6 +23,8 @@ const BestSellingPage = () => {
 
   return (
     <>
+     <Heading title={`Best Deals - Andromeda`} description="Andromeda is a platform where sellers can post and sell their products for free without restrictions"
+      keywords="e-commerce"/>
     {isLoading ? (
        <CatLoader/>
      ) : (

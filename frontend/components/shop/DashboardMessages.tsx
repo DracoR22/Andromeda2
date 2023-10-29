@@ -29,7 +29,7 @@ const DashboardMessages = () => {
   const [newMessage, setNewMessage] = useState("");
   const [onlineUsers, setOnlineUsers] = useState<any>([]);
   const [activeStatus, setActiveStatus] = useState(false);
-  const [images, setImages] = useState();
+  const [images, setImages] = useState<any>();
   const [open, setOpen] = useState(false);
   const scrollRef = useRef<any>(null);
 
@@ -149,6 +149,61 @@ const DashboardMessages = () => {
       });
   };
 
+  // SEND IMAGES FUNCTION
+  const handleImageUpload = async (e: any) => {
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      if (reader.readyState === 2) {
+        setImages(reader.result);
+        imageSendingHandler(reader.result);
+      }
+    };
+
+    reader.readAsDataURL(e.target.files[0]);
+  };
+
+  // SEND IMAGES
+  const imageSendingHandler = async (e: any) => {
+    const receiverId = currentChat.members.find(
+      (member: any) => member !== seller._id
+    );
+
+    socketId.emit("sendMessage", {
+      senderId: seller._id,
+      receiverId,
+      images: e,
+    });
+
+    try {
+      await axios.post(`${server}/message/create-new-message`, {
+          images: e,
+          sender: seller._id,
+          text: newMessage,
+          conversationId: currentChat._id,
+        })
+        .then((res) => {
+          // @ts-ignore
+          setImages();
+          setMessages([...messages, res.data.message]);
+          updateLastMessageForImage();
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // UPDATE LAST SENT IMAGE
+  const updateLastMessageForImage = async () => {
+    await axios.put(
+      `${server}/conversation/update-last-message/${currentChat._id}`,
+      {
+        lastMessage: "Photo",
+        lastMessageId: seller._id,
+      }
+    );
+  };
+
   useEffect(() => {
     scrollRef.current?.scrollIntoView({ beahaviour: "smooth" });
   }, [messages]);
@@ -173,7 +228,7 @@ const DashboardMessages = () => {
         <>
           <SellerInbox setOpen={setOpen} newMessage={newMessage} setNewMessage={setNewMessage}
           sendMessageHandler={sendMessageHandler} messages={messages} sellerId={seller._id}
-          userData={userData} activeStatus={activeStatus}    scrollRef={scrollRef}/>
+          userData={userData} activeStatus={activeStatus} handleImageUpload={handleImageUpload} scrollRef={scrollRef}/>
         </>
       )}
     </div>
@@ -263,9 +318,10 @@ interface SellerInboxProps {
   userData: any
   activeStatus: any
   scrollRef: any
+  handleImageUpload: (arg0: any) => void
 }
 
-const SellerInbox = ({ setOpen, newMessage, setNewMessage, sendMessageHandler, messages, sellerId, userData, activeStatus, scrollRef }: SellerInboxProps) => {
+const SellerInbox = ({ setOpen, newMessage, setNewMessage, sendMessageHandler, messages, sellerId, userData, activeStatus, scrollRef, handleImageUpload }: SellerInboxProps) => {
 
   return (
     <div className="w-full min-h-full flex flex-col justify-between">
@@ -326,7 +382,7 @@ const SellerInbox = ({ setOpen, newMessage, setNewMessage, sendMessageHandler, m
           name=""
           id="image"
           className="hidden "
-          // onChange={handleImageUpload}
+          onChange={handleImageUpload}
         />
         <label htmlFor="image">
           <BiImageAdd className="cursor-pointer" size={25} />

@@ -73,7 +73,7 @@ const EventCard = ({ data, active }: Props) => {
      </div>
     ) : (
       <div>
-        No active events
+        
       </div>
     )}
    </>

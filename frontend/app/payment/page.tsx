@@ -12,6 +12,7 @@ import { loadStripe } from "@stripe/stripe-js"
 import ClientOnly from "@/components/ClientOnly"
 import { useSelector } from "react-redux"
 import { redirect } from "next/navigation"
+import Heading from "@/utils/Heading"
 
 const PaymentPage = () => {
 
@@ -33,6 +34,8 @@ const PaymentPage = () => {
 
   return (
     <div>
+      <Heading title={`Payment - Andromeda`} description="Andromeda is a platform where sellers can post and sell their products for free without restrictions"
+      keywords="e-commerce"/>
       <ClientOnly>
       <Header/>
       <br />

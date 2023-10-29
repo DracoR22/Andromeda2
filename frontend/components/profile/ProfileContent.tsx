@@ -29,6 +29,8 @@ const ProfileContent = ({ active }: Props) => {
     const [avatar, setAvatar] = useState<any>(null);
     const dispatch = useDispatch();
 
+    const [isLoading, setIsLoading] = useState(false)
+
     
   useEffect(() => {
     if (error) {
@@ -65,7 +67,9 @@ const ProfileContent = ({ active }: Props) => {
 
     const handleSubmit = (e: any) => {
       e.preventDefault()
+      setIsLoading(true)
       dispatch(updateUserInformation(name, email, phoneNumber))
+      setIsLoading(false)
     }
 
   return (
@@ -135,12 +139,10 @@ const ProfileContent = ({ active }: Props) => {
 
               
             </div>
-            <input
-              className={`w-[250px] h-[40px] border border-[#3a24db] text-center text-[#3a24db] rounded-[3px] mt-8 cursor-pointer`}
-              required
-              value="Update"
-              type="submit"
-            />
+            <Button isLoading={isLoading} disabled={isLoading}
+             className="bg-sky-500 hover:bg-sky-600 transition rounded-full p-2 px-8 flex text-white">
+              Update
+            </Button>
           </form>
         </div>
       </>

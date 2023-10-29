@@ -5,6 +5,7 @@ import Header from "@/components/navbar/Header"
 import ProductCard from "@/components/product/ProductCard";
 import { productData } from "@/static/data";
 import styles from "@/styles/styles"
+import Heading from "@/utils/Heading";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
@@ -31,6 +32,8 @@ const ProductsPage = () => {
 
   return (
    <>
+   <Heading title={`Products - Andromeda`} description="Andromeda is a platform where sellers can post and sell their products for free without restrictions"
+      keywords="e-commerce"/>
    {isLoading ? (
     <div>
       <CatLoader/>

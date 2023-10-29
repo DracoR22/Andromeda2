@@ -44,8 +44,8 @@ body {
 }
 
 .img-slider-btn > * {
-  stroke: #3bc177;
-  fill: #3bc177;
+  stroke: #ffff;
+  fill: #ffff;
   width: 2rem;
   height: 2rem;
 }
@@ -71,8 +71,8 @@ body {
 }
 
 .img-slider-dot-btn > * {
-  stroke: #3bc177;
-  fill: #3bc177;
+  stroke: #ffff;
+  fill: #ffff;
   height: 100%;
   width: 100%;
 }

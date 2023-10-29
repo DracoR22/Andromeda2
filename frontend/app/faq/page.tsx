@@ -3,11 +3,14 @@
 import Footer from "@/components/Footer"
 import Header from "@/components/navbar/Header"
 import styles from "@/styles/styles";
+import Heading from "@/utils/Heading";
 import { useState } from "react";
 
 const FaqPage = () => {
   return (
     <div>
+      <Heading title={`FAQ - Andromeda`} description="Andromeda is a platform where sellers can post and sell their products for free without restrictions"
+      keywords="e-commerce"/>
      <Header activeHeading={5} />
      <div className="mx-10">
      <Faq />

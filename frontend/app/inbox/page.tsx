@@ -11,6 +11,7 @@ import { server } from "@/utils/server";
 import { useRouter } from "next/navigation"
 import { AiOutlineArrowRight, AiOutlineSend } from "react-icons/ai";
 import styles from "@/styles/styles";
+import Heading from "@/utils/Heading";
 
 // CONECT TO SOCKET SERVER
 const ENDPOINT = "http://localhost:4000/"
@@ -28,7 +29,7 @@ const UserInboxPage = () => {
     const [newMessage, setNewMessage] = useState("");
     const [onlineUsers, setOnlineUsers] = useState<any>([]);
     const [activeStatus, setActiveStatus] = useState(false);
-    const [images, setImages] = useState();
+    const [images, setImages] = useState<any>();
     const [open, setOpen] = useState(false);
     const scrollRef = useRef<any>(null);
 
@@ -148,6 +149,69 @@ const UserInboxPage = () => {
       });
   };
 
+  // SEND IMAGES
+  const handleImageUpload = async (e: any) => {
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      if (reader.readyState === 2) {
+        setImages(reader.result);
+        imageSendingHandler(reader.result);
+      }
+    };
+
+    reader.readAsDataURL(e.target.files[0]);
+  };
+
+  const imageSendingHandler = async (e: any) => {
+
+    const receiverId = currentChat.members.find(
+      (member: any) => member !== user._id
+    );
+
+    socketId.emit("sendMessage", {
+      senderId: user._id,
+      receiverId,
+      images: e,
+    });
+
+    try {
+      await axios
+        .post(
+          `${server}/message/create-new-message`,
+          {
+            images: e,
+            sender: user._id,
+            text: newMessage,
+            conversationId: currentChat._id,
+          }
+        )
+        .then((res) => {
+          // @ts-ignore
+          setImages();
+          setMessages([...messages, res.data.message]);
+          updateLastMessageForImage();
+        });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const updateLastMessageForImage = async () => {
+    await axios.put(
+      `${server}/conversation/update-last-message/${currentChat._id}`,
+      {
+        lastMessage: "Photo",
+        lastMessageId: user._id,
+      }
+    );
+  };
+
+  useEffect(() => {
+    scrollRef.current?.scrollIntoView({ beahaviour: "smooth" });
+  }, [messages]);
+
+
   useEffect(() => {
     scrollRef.current?.scrollIntoView({ beahaviour: "smooth" });
   }, [messages]);
@@ -155,6 +219,8 @@ const UserInboxPage = () => {
 
   return (
     <div className=" bg-white m-5 h-full overflow-y-scroll rounded">
+      <Heading title={`Inbox - Andromeda`} description="Andromeda is a platform where sellers can post and sell their products for free without restrictions"
+      keywords="e-commerce"/>
     {!open && (
       <>
         <Header />
@@ -190,7 +256,7 @@ const UserInboxPage = () => {
         userData={userData}
         activeStatus={activeStatus}
         scrollRef={scrollRef}
-        // handleImageUpload={handleImageUpload}
+        handleImageUpload={handleImageUpload}
       />
     )}
   </div>
@@ -279,9 +345,10 @@ const MessageList = ({ data, index, setOpen, setCurrentChat, me, setUserData, is
     userData: any
     activeStatus: any
     scrollRef: any
+    handleImageUpload: any
   }
   
-  const SellerInbox = ({ setOpen, newMessage, setNewMessage, sendMessageHandler, messages, sellerId, userData, activeStatus, scrollRef }: SellerInboxProps) => {
+  const SellerInbox = ({ setOpen, newMessage, setNewMessage, sendMessageHandler, messages, sellerId, userData, activeStatus, scrollRef, handleImageUpload }: SellerInboxProps) => {
   
     return (
       <div className="w-full min-h-full flex flex-col justify-between">
@@ -343,7 +410,7 @@ const MessageList = ({ data, index, setOpen, setCurrentChat, me, setUserData, is
             name=""
             id="image"
             className="hidden "
-            // onChange={handleImageUpload}
+            onChange={handleImageUpload}
           />
           <label htmlFor="image">
             <BiImageAdd className="cursor-pointer" size={25} />

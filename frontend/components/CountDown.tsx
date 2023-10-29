@@ -14,14 +14,14 @@ const CountDown = ({data}: Props) => {
       setTimeLeft(calculateTimeLeft());
     }, 1000);
 
-    if (
-      typeof timeLeft.days === 'undefined' &&
-      typeof timeLeft.hours === 'undefined' &&
-      typeof timeLeft.minutes === 'undefined' &&
-      typeof timeLeft.seconds === 'undefined'
-    ) {
-      axios.delete(`${server}/event/delete-shop-event/${data._id}`);
-    }
+    // if (
+    //   typeof timeLeft.days === 'undefined' &&
+    //   typeof timeLeft.hours === 'undefined' &&
+    //   typeof timeLeft.minutes === 'undefined' &&
+    //   typeof timeLeft.seconds === 'undefined'
+    // ) {
+    //   axios.delete(`${server}/event/delete-shop-event/${data._id}`);
+    // }
     return () => clearTimeout(timer);
   });
 
