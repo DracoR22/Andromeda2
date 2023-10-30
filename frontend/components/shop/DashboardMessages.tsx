@@ -14,7 +14,7 @@ import { format } from "timeago.js";
 import Image from "next/image"
 
 // CONECT TO SOCKET SERVER
-const ENDPOINT = "http://localhost:4000/"
+const ENDPOINT = "https://socket-andromeda.onrender.com/"
 const socketId = socketIO(ENDPOINT, {transports: ["websocket"]})
 
 const DashboardMessages = () => {
