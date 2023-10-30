@@ -28,7 +28,7 @@ const ShopLoginComp = () => {
         setIsLoading(true)
         await axios.post(`${server}/shop/login-shop`, { email, password }, { withCredentials: true })
         toast.success("Logged in to your shop")
-        router.push(`/dashboard`)
+        router.push(`/`)
         setTimeout(() => {
           window.location.reload();
         }, 500);

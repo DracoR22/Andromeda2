@@ -140,8 +140,10 @@ const paymentHandler = async (e: any) => {
             toast.success("Order successful!");
             localStorage.setItem("cartItems", JSON.stringify([]));
             localStorage.setItem("latestOrder", JSON.stringify([]));
-            window.location.reload();
             router.push("/order/success");
+            setTimeout(() => {
+              window.location.reload();
+            }, 2000);
           });
       }
     }

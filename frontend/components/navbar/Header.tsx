@@ -82,14 +82,15 @@ const Header = ({ activeHeading }: Props) => {
     }
   }
 
-
-  // window.addEventListener("scroll", () => {
-  //   if (window.scrollY > 70) {
-  //     setActive(true);
-  //   } else {
-  //     setActive(false);
-  //   }
-  // });
+useEffect(() => {
+  window.addEventListener("scroll", () => {
+    if (window.scrollY > 70) {
+      setActive(true);
+    } else {
+      setActive(false);
+    }
+  });
+}, [])
 
   return (
    <>
