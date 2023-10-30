@@ -20,12 +20,12 @@ const app = express()
 app.use(express.json({ limit: "50mb" }))
 app.use(cookieParser())
 app.use(cors({
-    origin: ['https://andromeda-pearl.vercel.app'],
+    origin: ['*'],
     credentials: true
 }))
 
 // Test Api
-app.use("/test", (req, res) => {
+app.use("/", (req, res) => {
     res.send("Api is working")
 })
 
