@@ -1,1 +1,1 @@
-export const server = "https://andromeda-8kwv.onrender.com/api/v2";
+export const server = "https://andromeda-api.fly.dev/api/v2";
