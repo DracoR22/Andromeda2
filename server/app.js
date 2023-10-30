@@ -37,9 +37,9 @@ app.use("/api/v2/message", messageRoutes)
 app.use("/api/v2/withdraw", withdrawRoutes)
 
 // Test Api
-// app.use("/", (req, res) => {
-//     res.send("Api is working")
-// })
+app.get('/', async (req, res) => {
+    res.send('Hello World')
+})
 
 // Middleware Calls
 app.use(ErrorHandler)
