@@ -20,14 +20,9 @@ const app = express()
 app.use(express.json({ limit: "50mb" }))
 app.use(cookieParser())
 app.use(cors({
-    origin: ['https://andromeda-pearl.vercel.app'],
+    origin: ['https://andromeda-pearl.vercel.app', 'http://localhost:3000'],
     credentials: true
 }))
-
-// Test Api
-app.use("/", (req, res) => {
-    res.send("Api is working")
-})
 
 // Routes
 app.use("/api/v2/user", userRoutes)
@@ -41,6 +36,10 @@ app.use("/api/v2/conversation", conversationRoutes)
 app.use("/api/v2/message", messageRoutes)
 app.use("/api/v2/withdraw", withdrawRoutes)
 
+// Test Api
+app.use("/", (req, res) => {
+    res.send("Api is working")
+})
 
 // Middleware Calls
 app.use(ErrorHandler)
