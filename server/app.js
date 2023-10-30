@@ -37,7 +37,7 @@ app.use("/api/v2/message", messageRoutes)
 app.use("/api/v2/withdraw", withdrawRoutes)
 
 // Test Api
-app.use("/", (req, res) => {
+app.use("/test", (req, res) => {
     res.send("Api is working")
 })
 
