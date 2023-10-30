@@ -1,6 +1,6 @@
 import hero1 from "@/public/hero/hero1.png"
 import hero2 from "@/public/hero/hero2.jpg"
-import hero3 from "@/public/hero/hero3.jpg"
+import hero3 from "@/public/hero/heroshop.jpg"
 import hero4 from "@/public/hero/hero4.jpg"
 import ImageSlider from "./ImageSlider"
 
