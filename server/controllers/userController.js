@@ -36,7 +36,7 @@ module.exports = {
     }}
 
     const activationToken = createActivationToken(user);
-    const activationUrl = `http://localhost:3000/activation/${activationToken}`;
+    const activationUrl = `https://andromeda-pearl.vercel.app/activation/${activationToken}`;
 
     // Send Activation Email
     try {
