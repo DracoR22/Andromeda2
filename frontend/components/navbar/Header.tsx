@@ -95,7 +95,7 @@ useEffect(() => {
   return (
    <>
      <div className={`${active === true ? `w-full shadow-sm fixed opacity-85 top-0 left-0 z-10` : null}
-     transition ${styles.section} bg-white px-10`}>
+     transition ${styles.section} bg-white px-10 border-b border-neutral-200 mb-8`}>
       <div className="hidden 800px:h-[40px] 800px:my-[20px] 800px:flex items-center justify-between">
         <div>
             <Link href="/">

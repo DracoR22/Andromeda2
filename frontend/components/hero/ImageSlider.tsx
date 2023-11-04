@@ -47,7 +47,7 @@ const ImageSlider = ({ images }: Props) => {
   return (
     <section
     aria-label="Image Slider"
-    style={{ width: "100%", height: "100%", position: "relative" }}
+    style={{ width: "85%", height: "50%", position: "relative" }}
   >
     <a href="#after-image-slider-controls" className="skip-link">
       Skip Image Slider Controls
