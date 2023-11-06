@@ -1,6 +1,6 @@
 import hero1 from "@/public/hero/heros1.webp"
 import hero2 from "@/public/hero/heros2.webp"
-import hero3 from "@/public/hero/heros3.webp"
+import hero3 from "@/public/hero/hero2.jpg"
 import hero4 from "@/public/hero/hero4.jpg"
 import ImageSlider from "./ImageSlider"
 

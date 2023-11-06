@@ -5,6 +5,7 @@ import Categories from "@/components/Categories"
 import ClientOnly from "@/components/ClientOnly"
 import Events from "@/components/Events"
 import Footer from "@/components/Footer"
+import BrandSlider from "@/components/hero/BrandSlider"
 import Hero from "@/components/hero/Hero"
 import Header from "@/components/navbar/Header"
 import FeaturedProduct from "@/components/product/FeaturedProduct"
@@ -17,6 +18,7 @@ const Home = () => {
       keywords="e-commerce"/>
        <Header activeHeading={1}/>
        <Hero/>
+       <BrandSlider/>
       <div className="mx-10">
        <Categories/>
        <BestDeals/>
