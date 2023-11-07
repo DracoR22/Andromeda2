@@ -4,7 +4,7 @@ import styles from "@/styles/styles"
 import { RxCross1 } from "react-icons/rx"
 import { IoBagHandleOutline } from "react-icons/io5"
 import Link from "next/link"
-import { useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import { toast } from "react-toastify"
 import { HiPlus, HiOutlineMinus } from "react-icons/hi"
 import { useDispatch, useSelector } from "react-redux"
@@ -36,10 +36,33 @@ const totalPriceAsString = totalPrice.toString().substring(0, 4);
 // Convert the extracted string back to a number
 const firstFourNumbers = parseInt(totalPriceAsString, 10);
 
+// Close on click outside
+const cartRef = useRef<HTMLDivElement>(null);
+
+const handleOutsideClick = useCallback(
+  (event: MouseEvent) => {
+    if (cartRef.current && !cartRef.current.contains(event.target as Node)) {
+      setOpenCart(false);
+    }
+  },
+  []
+);
+
+useEffect(() => {
+  // Add a click event listener to the document to close the cart when clicking outside of it
+  document.addEventListener('mousedown', handleOutsideClick);
+  
+  return () => {
+    // Remove the event listener when the component unmounts
+    document.removeEventListener('mousedown', handleOutsideClick);
+  };
+}, []);
+
+
 
   return (
     <div className="fixed top-0 left-0 w-full bg-[#0000004b] h-screen z-10">
-      <div className="fixed top-0 right-0 h-full w-[80%] 800px:w-[25%] bg-white flex flex-col overflow-y-scroll justify-between shadow-sm">
+      <div ref={cartRef} className="fixed top-0 right-0 h-full w-[80%] 800px:w-[25%] bg-white flex flex-col overflow-y-scroll justify-between shadow-sm">
         {cart && cart.length === 0 ? (
           <div className="w-full h-screen flex items-center justify-center">
             <div className="flex w-full justify-end pt-5 pr-5 fixed top-3 right-3">

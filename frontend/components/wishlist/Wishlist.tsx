@@ -3,7 +3,7 @@
 import { addTocart } from "@/redux/actions/cart"
 import { removeFromWishlist } from "@/redux/actions/wishlist"
 import styles from "@/styles/styles"
-import { useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 import { AiOutlineHeart } from "react-icons/ai"
 import { BsCartPlus } from "react-icons/bs"
 import { RxCross1 } from "react-icons/rx"
@@ -28,9 +28,32 @@ const Wishlist = ({ setOpenWishlist }: Props) => {
     setOpenWishlist(false);
   }
 
+  // Close on click outside
+const closeRef = useRef<HTMLDivElement>(null);
+
+const handleOutsideClick = useCallback(
+  (event: MouseEvent) => {
+    if (closeRef.current && !closeRef.current.contains(event.target as Node)) {
+      setOpenWishlist(false);
+    }
+  },
+  []
+);
+
+useEffect(() => {
+  // Add a click event listener to the document to close the wishlist when clicking outside of it
+  document.addEventListener('mousedown', handleOutsideClick);
+  
+  return () => {
+    // Remove the event listener when the component unmounts
+    document.removeEventListener('mousedown', handleOutsideClick);
+  };
+}, []);
+
+
   return (
     <div className="fixed top-0 left-0 w-full bg-[#0000004b] h-screen z-10">
-    <div className="fixed top-0 right-0 h-full w-[80%] overflow-y-scroll 800px:w-[25%] bg-white flex flex-col justify-between shadow-sm">
+    <div ref={closeRef} className="fixed top-0 right-0 h-full w-[80%] overflow-y-scroll 800px:w-[25%] bg-white flex flex-col justify-between shadow-sm">
       {wishlist && wishlist.length === 0 ? (
         <div className="w-full h-screen flex items-center justify-center">
           <div className="flex w-full justify-end pt-5 pr-5 fixed top-3 right-3">

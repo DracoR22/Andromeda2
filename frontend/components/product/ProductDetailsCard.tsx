@@ -4,7 +4,7 @@ import { addTocart } from "@/redux/actions/cart";
 import { addToWishlist, removeFromWishlist } from "@/redux/actions/wishlist";
 import styles from "@/styles/styles";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { AiFillHeart, AiOutlineHeart, AiOutlineMessage, AiOutlineShoppingCart } from "react-icons/ai";
 import { RxCross1 } from "react-icons/rx";
 import { useDispatch, useSelector } from "react-redux";
@@ -71,7 +71,6 @@ const ProductDetailsCard = ({ open, setOpen, data }: Props) => {
         setClick(!click)
         dispatch(addToWishlist(data))
       }
-    
 
   return (
     <div className="bg-[#fff]">
