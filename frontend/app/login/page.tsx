@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { redirect, useRouter } from "next/navigation"
 import { useSession } from "next-auth/react";
 import Heading from "@/utils/Heading";
-import { loadUser } from "@/redux/actions/user";
 
 const LoginPage = () => {
 
@@ -17,7 +16,9 @@ const LoginPage = () => {
 
   if(user || data) {
     router.push("/")
-    dispatch(loadUser())
+    setTimeout(() => {
+      window.location.reload();
+    }, 2000);
   }
 
   return (
