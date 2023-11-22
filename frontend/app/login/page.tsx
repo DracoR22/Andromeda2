@@ -1,23 +1,23 @@
 'use client'
 
 import Login from "@/components/auth/Login"
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { redirect, useRouter } from "next/navigation"
 import { useSession } from "next-auth/react";
 import Heading from "@/utils/Heading";
+import { loadUser } from "@/redux/actions/user";
 
 const LoginPage = () => {
 
   const { isAuthenticated, user } = useSelector((state: any) => state.user);
   const { data } = useSession()
+  const dispatch = useDispatch()
 
   const router= useRouter()
 
   if(user || data) {
     router.push("/")
-    setTimeout(() => {
-      window.location.reload();
-    }, 2000);
+    dispatch(loadUser())
   }
 
   return (

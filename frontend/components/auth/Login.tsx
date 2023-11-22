@@ -12,6 +12,7 @@ import { toast } from "react-toastify"
 import { redirect, useRouter } from "next/navigation"
 import { signIn } from "next-auth/react"
 import { useDispatch } from "react-redux"
+import { loadUser } from "@/redux/actions/user"
 
 
 
@@ -33,9 +34,7 @@ const Login = () => {
         await axios.post(`${server}/user/login-user`, { email, password }, { withCredentials: true })
         toast.success("Logged In!")
         router.push("/")
-        setTimeout(() => {
-          window.location.reload();
-        }, 500);
+        dispatch(loadUser())
        } catch (error: any) {
         toast.error(error.response.data.message)
        } finally {
