@@ -29,6 +29,9 @@ const Checkout = () => {
       }, []);
 
     const paymentSubmit = () => {
+      if(!user) {
+        return toast.error("Please login to continue")
+      }
         if(address1 === "" || address2 === "" || zipCode === null || country === "" || city === "") {
            toast.error("Please choose your delivery address")
         } else {
