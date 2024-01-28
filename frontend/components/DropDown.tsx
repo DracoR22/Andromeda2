@@ -1,5 +1,7 @@
 import styles from "@/styles/styles"
 import { useRouter } from "next/navigation"
+import { useEffect } from "react"
+import { useSelector } from "react-redux"
 
 interface Props {
     categoriesData: any
@@ -15,7 +17,7 @@ const DropDown = ({ categoriesData, setDropDown }: Props) => {
     setDropDown(false);
     setTimeout(() => {
       window.location.reload();
-    }, 100);
+    }, 1000);
   };
 
   return (
