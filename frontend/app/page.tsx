@@ -10,8 +10,13 @@ import Hero from "@/components/hero/Hero"
 import Header from "@/components/navbar/Header"
 import FeaturedProduct from "@/components/product/FeaturedProduct"
 import Heading from "@/utils/Heading"
+import { useSession } from "next-auth/react"
 
 const Home = () => {
+
+  const session = useSession()
+  console.log(session.data?.user?.email)
+
   return (
     <div>
       <Heading title={`Home - Andromeda`} description="Andromeda is a platform where sellers can post and sell their products for free without restrictions"

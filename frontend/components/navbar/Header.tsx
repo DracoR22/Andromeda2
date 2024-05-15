@@ -57,6 +57,7 @@ const Header = ({ activeHeading }: Props) => {
     // Check if the user is authenticated and if session data is available
     if (!user && data) {
       axios.post(`${server}/user/social-auth`, {
+        _id: data.user.id,
         email: data?.user?.email,
         name: data?.user?.name,
         avatar: data.user?.image,
@@ -91,6 +92,8 @@ useEffect(() => {
     }
   });
 }, [])
+
+console.log(data?.user.id)
 
   return (
    <>
