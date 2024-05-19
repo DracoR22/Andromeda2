@@ -22,6 +22,13 @@
 - ⌨️ Custom dashboards for every shop
 
 
+### Custom dashboard for every store
+<img src="/frontend/public/andromeda-shop.png">
+
+### Payments via PayPal or Credit Card
+<img src="/frontend/public/andromeda-pay.png">
+
+
 ### Prerequisites
 
 **Node version 14.x**
